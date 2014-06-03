@@ -2,3 +2,4 @@
 !*.d/
 !*.bash
 !.gitignore
+!*.md

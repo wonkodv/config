@@ -25,7 +25,9 @@ alias :x=' false'
 o(){
 	while [ -n "$1" ]
 	do
-		xdg-open "$1" 2>/dev/null >/dev/null &
+		(
+			xdg-open "$1" 2>/dev/null >/dev/null &
+		)
 		shift;
 	done
 }

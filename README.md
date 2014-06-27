@@ -18,8 +18,10 @@ Installation
 
 * `git clone` in some directory
 * `make enableall` in that directory
-* remove unneeded stuff from the enabled/ folder
-* `make all` conactenates all parts of the respective files
+* remove unneeded links from the enabled/ folder e.g.
+    $ rm enabled/bashrc.d/40-command-not-found-hook.bash 
+    rm: remove symbolic link `enabled/bashrc.d/40-command-not-found-hook.bash'? y
+* `make all` conactenates all enabled behaviours into the respective `.bash*`-files
 * `make install` creates symlinks in HOME pointing to the concated files
 
 BashRC

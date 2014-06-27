@@ -6,6 +6,7 @@ For bashrc and bash_profile currently, other .files possible
 Functions
 ----
 Each behaviour in 1 file, for example set `EDITOR=vim` in:
+
     available/bashrc.d/20-editor.bash
 
 Selection
@@ -19,8 +20,10 @@ Installation
 * `git clone` in some directory
 * `make enableall` in that directory
 * remove unneeded links from the enabled/ folder e.g.
-    $ rm enabled/bashrc.d/40-command-not-found-hook.bash 
-    rm: remove symbolic link `enabled/bashrc.d/40-command-not-found-hook.bash'? y
+```bash
+$ rm enabled/bashrc.d/40-command-not-found-hook.bash 
+rm: remove symbolic link `enabled/bashrc.d/40-command-not-found-hook.bash'? y
+```
 * `make all` conactenates all enabled behaviours into the respective `.bash*`-files
 * `make install` creates symlinks in HOME pointing to the concated files
 

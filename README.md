@@ -1,24 +1,26 @@
-My Bash
+Bash Configuration
 =====
 
-Files
+For bashrc and bash_profile currently, other .files possible
+
+Functions
+----
+Each behaviour in 1 file, for example set `EDITOR=vim` in:
+    available/bashrc.d/20-editor.bash
+
+Selection
+------
+Select which functions by simlinking them in the respective enabled folder.
+Therefore behaviour can be customized without complicating git pulls
+
+Installation
 ----
 
-Everythin is Split in 1 File per topic, in 1 folder per resulting file.
-
-* `bashrc.d`
-  * `50-some-function.bash`
-  * `60-other-function.bash`
-* `bash_profile`
-  * ...
-
-
-make
-----
-
+* `git clone` in some directory
+* `make enableall` in that directory
+* remove unneeded stuff from the enabled/ folder
 * `make all` conactenates all parts of the respective files
 * `make install` creates symlinks in HOME pointing to the concated files
-
 
 BashRC
 ==========

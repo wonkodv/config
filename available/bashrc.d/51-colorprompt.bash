@@ -8,8 +8,8 @@ function _render_color_prompt() {
 	status="$(
 	_returncode_prompt $ret
 	_git_prompt
-#	_svn_prompt
 	_job_prompt
+	_svn_prompt
 	_ssh_prompt
 	_sudo_prompt
 #	_trickle_prompt

@@ -1,5 +1,2 @@
-*
-!*.d/
-!*.bash
-!.gitignore
-!*.md
+generated/
+enabled/

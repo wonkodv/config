@@ -9,3 +9,5 @@ alias stereo='ssh marvin bin/stereo '
 s() {
 	source ~/bin/s
 }
+
+s -complete

@@ -8,7 +8,7 @@ alias nano='nano -w'
 alias ping='ping -c 5 -O '
 alias shred='shred -uz'
 
-alias bd="lsblk --output name,mountpoint,fstype,size,label,partlabel,model"
+alias bd="lsblk --output name,mountpoint,ro,fstype,size,label,partlabel,model"
 alias l='ls --color=auto -lh --file-type'
 
 alias ln='ln -i'
@@ -17,17 +17,31 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias sudo='sudo '
 
-alias :q=' false'
-alias :Q=' false'
-alias :x=' false'
+alias :q='false'
+alias :wq='false'
 
+alias !='sudo `history -p "!!"`'
+
+alias ipython='ipython --no-confirm-exit'
 
 o(){
+(
+	(
 	while [ -n "$1" ]
 	do
-		(
-			xdg-open "$1" 2>/dev/null >/dev/null &
-		)
+		case `file --mime-type --brief "$1"` in
+			application/pdf)evince    "$1";;
+			image/*)		feh       "$1";;
+			*)				xdg-open  "$1";;
+		esac 
 		shift;
 	done
+
+	) &>/dev/null &
+)
 }
+
+function vimgrep {
+	vim -c "vimgrep '$1' **/*.${2:-*}" 
+}
+

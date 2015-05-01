@@ -9,11 +9,11 @@ function _render_color_prompt() {
 	_returncode_prompt $ret
 	_git_prompt
 	_job_prompt
-	_svn_prompt
+#	_svn_prompt
 	_ssh_prompt
 	_sudo_prompt
-#	_trickle_prompt
-#	_tsocks_prompt
+	_trickle_prompt
+	_tsocks_prompt
 #	_shlvl_prompt
 	)"
 

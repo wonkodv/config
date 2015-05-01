@@ -17,7 +17,7 @@ _do_after_login()
 	sudo pacman -Sy &&  pacman -Quq > ~/tmp/.pacman-packages
 }
 
-if [[ $XDG_VTNR -eq 1 ]]
+if [[ -z "$DISPLAY" &&  $XDG_VTNR -eq 1 ]]
 then
 	_do_after_login &>/dev/null &
 	read -t 1 -n 1 -p "StartX? [Y/n]: " check

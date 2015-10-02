@@ -1,4 +1,7 @@
-all: generated/bashrc generated/bash_profile
+all: setup_done generated/bashrc generated/bash_profile
+
+setup_done:
+	@test -d enabled || { echo "use enableall first, then select what to enable, then run install"; false ; }
 
 install: all
 	ln -i -s $(PWD)/generated/bashrc $(HOME)/.bashrc

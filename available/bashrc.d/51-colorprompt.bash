@@ -9,6 +9,7 @@ function _render_color_prompt() {
 	_returncode_prompt $ret
 	_git_prompt
 	_job_prompt
+	_pyvenv_prompt
 #	_svn_prompt
 	_ssh_prompt
 	_sudo_prompt

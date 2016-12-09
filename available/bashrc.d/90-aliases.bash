@@ -20,28 +20,28 @@ alias sudo='sudo '
 alias :q='false'
 alias :wq='false'
 
-alias !='sudo `history -p "!!"`'
-
 alias ipython='ipython --no-confirm-exit'
+
+alias crontab='crontab -i'
 
 o(){
 (
-	(
-	while [ -n "$1" ]
-	do
-		case `file --mime-type --brief "$1"` in
-			application/pdf)evince    "$1";;
-			image/*)		feh       "$1";;
-			*)				xdg-open  "$1";;
-		esac 
-		shift;
-	done
+    (
+    while [ -n "$1" ]
+    do
+        case `file --mime-type --brief "$1"` in
+            application/pdf)evince    "$1";;
+            image/*)		feh       "$1";;
+            *)				xdg-open  "$1";;
+        esac
+        shift;
+    done
 
-	) &>/dev/null &
+    ) &>/dev/null &
 )
 }
 
 function vimgrep {
-	vim -c "vimgrep '$1' **/*.${2:-*}" 
+    vim -c "vimgrep '$1' **/*.${2:-*}"
 }
 

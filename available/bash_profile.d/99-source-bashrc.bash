@@ -1,1 +1,1 @@
-[[ $- == *i* && -f ~/.bashrc ]] && . ~/.bashrc
+tty -s && [ -f ~/.bashrc ] && . ~/.bashrc

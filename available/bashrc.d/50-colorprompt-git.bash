@@ -1,7 +1,7 @@
 function _git_prompt() {
     # white on {red,yellow,green}
     local git_status="`LC_ALL=C git status -unormal 2>&1`"
-    if ! [[ "$git_status" =~ "Not a git repo" ]]
+    if ! [[ "$git_status" =~ "not a git repo" ]]
     then
         if [[ "$git_status" =~ "nothing to commit" ]]
         then

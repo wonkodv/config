@@ -7,6 +7,7 @@ alias mkdir='mkdir -p -v'
 alias nano='nano -w'
 alias ping='ping -c 5 -O '
 alias shred='shred -uz'
+alias clip='xclip -selection clipboard'
 
 alias bd="lsblk --output name,mountpoint,ro,fstype,size,label,partlabel,model"
 alias l='ls --color=auto -lh --file-type'

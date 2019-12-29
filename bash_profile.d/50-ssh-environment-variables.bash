@@ -2,5 +2,5 @@
 # has in its 
 if [ -n "$SSH_CLIENT" ]
 then
-    echo $(strings /proc/*/environ 2>/dev/null | grep '^DISPLAY\|^DBUS_SESSION' | sort -u  | tail -2)
+    export $(strings /proc/*/environ 2>/dev/null | grep '^DISPLAY\|^DBUS_SESSION' | sort -u  | tail -2)
 fi

@@ -1,3 +1,5 @@
-export EDITOR=/usr/bin/vim
-# disable <C-s>
-stty -ixon
+export EDITOR=/usr/bin/nvim
+# disable terminal reacting to <C-s> 
+stty -ixon 2>/dev/null
+
+alias vim=nvim

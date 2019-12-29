@@ -12,6 +12,7 @@ function _render_color_prompt() {
 	_pyvenv_prompt
 #	_svn_prompt
 	_ssh_prompt
+	_wine_prompt
 	_sudo_prompt
 	_trickle_prompt
 	_tsocks_prompt

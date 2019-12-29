@@ -43,6 +43,6 @@ o(){
 }
 
 function vimgrep {
-    vim -c "vimgrep '$1' **/*.${2:-*}"
+    nvim -c "vimgrep '$1' **/*.${2:-*}"
 }
 

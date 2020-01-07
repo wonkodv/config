@@ -16,14 +16,14 @@ alias ln='ln -i'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias crontab='crontab -i'
+
 alias sudo='sudo '
 
 alias :q='false'
 alias :wq='false'
 
 alias ipython='ipython --no-confirm-exit'
-
-alias crontab='crontab -i'
 
 o(){
 (

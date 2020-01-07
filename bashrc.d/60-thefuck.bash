@@ -1,1 +1,4 @@
-eval "$(thefuck --alias)"
+if which thefuck &>/dev/null
+then
+    eval "$(thefuck --alias)"
+fi

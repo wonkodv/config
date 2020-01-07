@@ -1,4 +1,4 @@
 if [ -f ~/.todo ]
 then
-	cat ~/.todo
+    cat ~/.todo
 fi

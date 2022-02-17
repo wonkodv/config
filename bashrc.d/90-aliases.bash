@@ -25,6 +25,54 @@ alias :wq='false'
 
 alias ipython='ipython --no-confirm-exit'
 
+
+alias ?="_status"
+function _status() {
+    local bold="\e[1m"
+    local red="\e[1;31m"
+    local clear="\e[0m"
+
+    if [[ $(jobs |wc -l ) -gt 0 ]]
+    then
+        echo -e "${bold}Jobs${clear}"
+        jobs
+    fi
+
+    if [ -n "$VIRTUAL_ENV" ]
+    then
+        echo -ne"${bold}VENV${clear}    "
+        echo "$VIRTUAL_ENV"
+    fi
+
+    if [ -n "$SSH_CLIENT" ]
+    then
+        echo -ne "${bold}SSH${clear}   "
+        echo "$SSH_CONNECTION"
+    fi
+
+    echo -en "${bold}ID${clear}      "
+    [ "$USER" == root ] && echo -ne ${red}
+    echo -e $USER${clear}@$HOSTNAME
+
+    if [ -r /sys/class/power_supply/BAT0/ ]
+    then
+        echo -en "${bold}BATTERY${clear} "
+        full=`cat /sys/class/power_supply/BAT0/energy_full`
+        now=`cat /sys/class/power_supply/BAT0/energy_now`
+        echo -n "$((now*100/full))% "
+        cat /sys/class/power_supply/BAT0/status
+    fi
+
+    if   git rev-parse &>/dev/null
+    then
+        echo -e "${bold}GIT${clear}"
+        git status -bs --show-stash --ahead-behind -M
+    fi
+
+    echo -en "${bold}PWD${clear}     "
+    echo  "$PWD"
+}
+
 o(){
 (
     (
@@ -37,12 +85,14 @@ o(){
         esac
         shift;
     done
-
     ) &>/dev/null &
 )
 }
 
-function vimgrep {
-    nvim -c "vimgrep '$1' **/*.${2:-*}"
+if [ -r ~/bin/s ]
+then
+s() {
+    source ~/bin/s
 }
-
+s -complete
+fi

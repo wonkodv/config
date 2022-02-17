@@ -1,1 +1,0 @@
-alias ?='git status -sb'

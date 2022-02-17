@@ -82,20 +82,12 @@ o(){
     while [ -n "$1" ]
     do
         case `file --mime-type --brief "$1"` in
-            application/pdf)evince    "$1";;
-            image/*)		feh       "$1";;
-            *)				xdg-open  "$1";;
+            application/pdf)    evince    "$1";;
+            image/*)            feh       "$1";;
+            *)                  xdg-open  "$1";;
         esac
         shift;
     done
     ) &>/dev/null &
 )
 }
-
-if [ -r ~/bin/s ]
-then
-s() {
-    source ~/bin/s
-}
-s -complete
-fi

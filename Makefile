@@ -1,8 +1,12 @@
 all: generated/bashrc generated/bash_profile
 
 install:
-	ln -i -s $(PWD)/generated/bashrc $(HOME)/.bashrc
-	ln -i -s $(PWD)/generated/bash_profile $(HOME)/.bash_profile
+	cp -i $(PWD)/generated/bashrc $(HOME)/.bashrc
+	cp -i $(PWD)/generated/bash_profile $(HOME)/.bash_profile
+
+diff:
+	diff $(PWD)/generated/bashrc $(HOME)/.bashrc || true
+	diff $(PWD)/generated/bash_profile $(HOME)/.bash_profile || true
 
 generated/%:
 	mkdir -p generated
@@ -14,4 +18,4 @@ generated/%:
 	}  > $@
 
 clean:
-	rm -rf generated/*
+	rm -rf generated/

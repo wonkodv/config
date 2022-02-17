@@ -4,4 +4,5 @@ then
     source ~/code/bashjump/jump.bash
     alias cd=bashjump_cd
     alias j=bashjump_jump
+    bashjump_check_or_create_db
 fi

@@ -1,15 +1,16 @@
 alias diff='colordiff'
 alias grep='grep --color=auto'
 alias df='df -h'
-alias free='free -m'
+alias free='free -h'
 alias du='du -c -h'
+alias dd='dd status=progress'
 alias mkdir='mkdir -p -v'
 alias nano='nano -w'
-alias ping='ping -c 5 -O '
 alias shred='shred -uz'
 alias clip='xclip -selection clipboard'
+alias rsync='rsync --progress'
 
-alias bd="lsblk --output name,mountpoint,ro,fstype,size,label,partlabel,model"
+alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
 alias l='ls --color=auto -lh --file-type'
 
 alias ln='ln -i'
@@ -17,6 +18,8 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias crontab='crontab -i'
+
+alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 
 alias sudo='sudo '
 

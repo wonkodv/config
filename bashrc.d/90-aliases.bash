@@ -1,32 +1,32 @@
-alias diff='colordiff'
-alias grep='grep --color=auto'
-alias df='df -h'
-alias free='free -h'
-alias du='du -c -h'
-alias dd='dd status=progress'
-alias mkdir='mkdir -p -v'
-alias nano='nano -w'
-alias shred='shred -uz'
+alias cat='cat -v'
 alias clip='xclip -selection clipboard'
-alias rsync='rsync --progress'
-
-alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
-alias l='ls --color=auto -lh --file-type'
-
-alias ln='ln -i'
-alias rm='rm -i'
+alias clipo='xclip -selection clipboard -out'
+alias clipi='xclip -selection clipboard -in'
 alias cp='cp -i'
-alias mv='mv -i'
 alias crontab='crontab -i'
-
-alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
-
+alias dd='dd status=progress'
+alias df='df -h'
+alias diff='colordiff'
+alias du='du -c -h'
+alias free='free -h'
+alias grep='grep --color=auto'
+alias ipython='ipython --no-confirm-exit'
+alias ln='ln -i'
+alias mkdir='mkdir -p -v'
+alias mv='mv -i'
+alias nano='nano -w'
+alias rm='rm -i'
+alias rsync='rsync --progress'
+alias shred='shred -uz'
 alias sudo='sudo '
 
+alias icat="kitty +kitten icat"
+alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
+alias l='ls --color=auto -lh --file-type --hyper-link=auto'
+alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 alias :q='false'
 alias :wq='false'
 
-alias ipython='ipython --no-confirm-exit'
 
 
 alias ?="_status"

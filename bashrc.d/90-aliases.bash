@@ -22,7 +22,7 @@ alias sudo='sudo '
 
 alias icat="kitty +kitten icat"
 alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
-alias l='ls --color=auto -lh --file-type --hyper-link=auto'
+alias l='ls --color=auto -lh --file-type --hyperlink=auto'
 alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 alias :q='false'
 alias :wq='false'

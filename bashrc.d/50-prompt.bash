@@ -1,9 +1,2 @@
-function _prompt() {
-    if [ "$?" -ne "0" ]
-    then
-        PS1="\[\e[0;37;41m\];\[\e[0m\] "
-    else
-        PS1="; "
-    fi
-}
-PROMPT_COMMAND='_prompt'
+PS0="\e[m"
+PS1='\[\e]0;\u@\h:\w\a\e[30;49;8m\]: \[\e[0;31m\]${?#0}\[\e[m\e[;34m\]; '

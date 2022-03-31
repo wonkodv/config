@@ -6,7 +6,7 @@ then
     export EDITOR="nvr --remote-tab-wait"
     alias vim="nvr --remote-tab"
 else
-    export EDITOR=/usr/bin/nvim
+    export EDITOR=nvim
     alias vim=nvim
 fi
 

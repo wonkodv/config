@@ -26,7 +26,7 @@ alias l='ls --color=auto -lh --file-type --hyperlink=auto'
 alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 alias :q='false'
 alias :wq='false'
-
+alias :e=$EDITOR
 
 
 alias ?="_status"
@@ -70,6 +70,7 @@ function _status() {
     then
         echo -e "${bold}GIT${clear}"
         git status -bs --show-stash --ahead-behind -M
+        git stash list
     fi
 
     echo -en "${bold}PWD${clear}     "

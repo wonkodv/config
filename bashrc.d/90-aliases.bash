@@ -1,4 +1,3 @@
-alias cat='cat -v'
 alias clip='xclip -selection clipboard'
 alias clipo='xclip -selection clipboard -out'
 alias clipi='xclip -selection clipboard -in'

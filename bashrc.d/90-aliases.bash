@@ -92,3 +92,27 @@ o(){
     ) &>/dev/null &
 )
 }
+
+
+
+
+
+if [ -n "$WSL_DISTRO_NAME" ]
+then
+    function o() {
+        w=$(wslpath -wa "$1")
+        (
+            builtin cd /mnt/c/Windows/System32
+            exec cmd.exe /c start '"Open"' "$w"
+        )
+    }
+
+    function x() {
+        w=$(wslpath -wa "$1")
+        (
+            builtin cd /mnt/c/Windows
+            exec explorer.exe /select, "$w"
+        )
+        true
+    }
+fi

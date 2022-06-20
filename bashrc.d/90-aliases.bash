@@ -9,6 +9,7 @@ alias diff='colordiff'
 alias du='du -c -h'
 alias free='free -h'
 alias grep='grep --color=auto'
+alias ip="ip --color=auto"
 alias ipython='ipython --no-confirm-exit'
 alias ln='ln -i'
 alias mkdir='mkdir -p -v'

@@ -1,16 +1,7 @@
 # disable terminal reacting to <C-s>
 stty -ixon 2>/dev/null
-
-if [ -n "$NVIM_LISTEN_ADDRESS" ]
-then
-    export EDITOR="nvr --remote-tab-wait"
-    alias vim="nvr --remote-tab"
-else
-    export EDITOR=nvim
-    alias vim=nvim
-fi
-
+export EDITOR=${EDITOR:-$(which nvim)}
+alias vim=$EDITOR
 function vimgrep {
     $(EDITOR) -c "vimgrep '$1' **/*.${2:-*}"
 }
-

@@ -26,7 +26,7 @@ alias l='ls --color=auto -lh --file-type --hyperlink=auto'
 alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 alias :q='false'
 alias :wq='false'
-alias :e=$EDITOR
+alias :e="nvr --remote-tab"
 
 
 alias ?="_status"

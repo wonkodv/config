@@ -1,5 +1,9 @@
+shopt -s cdspell
 shopt -s globstar
 shopt -s gnu_errfmt
-shopt -s histreedit
+shopt -s checkjobs
+shopt -s progcomp_alias
 
-set show-all-if-ambiguous on
+bind "set show-all-if-ambiguous on"
+bind "set colored-completion-prefix on"
+# if above don't work try: bind "set completion-prefix-display-length 10"

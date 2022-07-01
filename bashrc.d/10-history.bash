@@ -1,3 +1,4 @@
-HISTSIZE=900
+HISTSIZE=10000
 shopt -s histappend
-shopt -s checkwinsize
+shopt -s histreedit
+shopt -s histverify

@@ -69,8 +69,8 @@ function _status() {
     if   git rev-parse &>/dev/null
     then
         echo -e "${bold}GIT${clear}"
-        git status -bs --show-stash --ahead-behind -M
-        git stash list
+        git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M
+        git --no-pager stash list
     fi
 
     echo -en "${bold}PWD${clear}     "
@@ -102,16 +102,16 @@ then
     function o() {
         w=$(wslpath -wa "$1")
         (
-            builtin cd /mnt/c/Windows/System32
-            exec cmd.exe /c start '"Open"' "$w"
+            builtin cd /mnt/c/Windows/SysWOW64/
+            exec ./cmd.exe /c start '"Open"' "$w"
         )
     }
 
     function x() {
         w=$(wslpath -wa "$1")
         (
-            builtin cd /mnt/c/Windows
-            exec explorer.exe /select, "$w"
+            builtin cd /mnt/c/Windows/SysWOW64/
+            exec ./explorer.exe /select, "$w"
         )
         true
     }

@@ -4,11 +4,9 @@ then
     source ~/code/bashjump/jump.bash
     function cd(){
         bashjump_cd "$@"
-        pwd
     }
     function j(){
         bashjump_jump "$@"
-        pwd
     }
     bashjump_check_or_create_db
 fi

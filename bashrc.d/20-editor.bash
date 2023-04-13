@@ -2,7 +2,7 @@
 stty -ixon 2>/dev/null
 
 
-alias vim=$EDITOR
+alias vim='$EDITOR'
 
 if [ -n "$NVIM" ]
 then
@@ -18,5 +18,10 @@ then
     function _prompt_marker {
         nvr --servername "$NVIM_LISTEN_ADDRESS" -c ":mark p" &>/dev/null
         sleep 0.05
+    }
+else
+    export EDITOR=nvim
+    function _prompt_marker {
+        true
     }
 fi

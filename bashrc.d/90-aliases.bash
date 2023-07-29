@@ -23,7 +23,7 @@ alias sudo='sudo '
 alias icat="kitty +kitten icat"
 alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
 alias l='ls --color=auto -lh --file-type --hyperlink=auto'
-alias f='feh --auto-rotate --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
+alias f='feh --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
 alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"
@@ -80,15 +80,20 @@ function _status() {
 o(){
 (
     (
-    while [ -n "$1" ]
-    do
-        case `file --mime-type --brief "$1"` in
-            application/pdf)    evince    "$1";;
-            image/*)            feh       "$1";;
-            *)                  xdg-open  "$1";;
-        esac
-        shift;
-    done
+    if [ $# -gt 5 ]
+    then
+        while [ -n "$1" ]
+        do
+            xdg-open "$1"
+            shift;
+        done
+    else
+        while [ -n "$1" ]
+        do
+            xdg-open "$1" &
+            shift;
+        done
+    fi
     ) &>/dev/null &
 )
 }

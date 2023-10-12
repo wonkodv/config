@@ -1,6 +1,3 @@
-# disable terminal reacting to <C-s>
-stty -ixon 2>/dev/null
-
 if [ -n "$NVIM" ]
 then
     # once nvr checks for $NVIM, the --servername can be removed

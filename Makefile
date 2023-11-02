@@ -1,6 +1,7 @@
-all: generated/bashrc generated/bash_profile
+default:
+	echo "install"
 
-install:
+install: generated/bashrc generated/bash_profile
 	cp -i $(PWD)/generated/bashrc $(HOME)/.bashrc
 	cp -i $(PWD)/generated/bash_profile $(HOME)/.bash_profile
 

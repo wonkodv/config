@@ -23,7 +23,7 @@ alias sudo='sudo '
 alias icat="kitty +kitten icat"
 alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
 alias l='ls --color=auto -lh --file-type --hyperlink=auto'
-alias f='feh --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %f"'
+alias f='feh --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
 alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"
@@ -79,22 +79,21 @@ function _status() {
 
 o(){
 (
-    (
-    if [ $# -gt 5 ]
+    if [ $# -gt 3 ]
     then
         while [ -n "$1" ]
         do
-            xdg-open "$1"
+            echo "$1"
+            xdg-open "$1" &> /dev/null
             shift;
         done
     else
         while [ -n "$1" ]
         do
-            xdg-open "$1" &
+            xdg-open "$1"  &>/dev/null &
             shift;
         done
     fi
-    ) &>/dev/null &
 )
 }
 

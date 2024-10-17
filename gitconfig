@@ -38,3 +38,5 @@
 	pushInsteadOf = https://github.com
 [gpg]
 	format = ssh
+[init]
+	defaultBranch = dev

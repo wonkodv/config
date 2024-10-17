@@ -13,8 +13,11 @@ then
     PATH="$HOME/bin:$PATH"
 fi
 
+if [ -d "$HOME/.nix-profile/bin" ]
+then
+    PATH="$HOME/.nix-profile/bin:$PATH"
+fi
+
 export PATH
-
-
 
 export PYTHONPATH="${PYTHONPATH}":$HOME/code

@@ -1,3 +1,4 @@
+if which gettext pacman pkgfile &>/dev/null ; then
 command_not_found_handle () {
     local cmd=$1
     printf "bash: $(gettext bash "%s: command not found")\n" "$cmd" >&2
@@ -25,3 +26,11 @@ givemethat(){
         return 1
     fi
 }
+fi
+
+if which command-not-found &>/dev/null ; then
+    command_not_found_handle() {
+        command-not-found "$@"
+        return 127
+    }
+fi

@@ -1,4 +1,4 @@
-if [[ -z "$DISPLAY" &&  $XDG_VTNR -eq 1 ]]
+if  [[ -z "$DISPLAY" &&  $XDG_VTNR -eq 1 ]] && which pacman kitty notify-send &>/dev/null
 then
     (
         sleep 20

@@ -21,7 +21,7 @@ alias shred='shred -uz'
 alias sudo='sudo '
 
 alias icat="kitty +kitten icat"
-alias bd="lsblk --output name,partlabel,label,mountpoint,fstype,size,fsavail,fsuse%,model"
+alias bd="lsblk --output name,partlabel,label,mountpoints,fstype,size,fsavail,fsuse%,model,partuuid,uuid,pttype"
 alias l='ls --color=auto -lh --file-type --hyperlink=auto'
 alias f='feh --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
 alias :q='false'
@@ -43,13 +43,13 @@ function _status() {
 
     if [ -n "$VIRTUAL_ENV" ]
     then
-        echo -ne"${bold}VENV${clear}    "
+        echo -en "${bold}VENV${clear}    "
         echo "$VIRTUAL_ENV"
     fi
 
     if [ -n "$SSH_CLIENT" ]
     then
-        echo -ne "${bold}SSH${clear}   "
+        echo -en "${bold}SSH${clear}   "
         echo "$SSH_CONNECTION"
     fi
 

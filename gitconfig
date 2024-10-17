@@ -1,0 +1,40 @@
+[user]
+	email = wonko@hanstool.org
+	name = Wonko
+	signingkey = ~/.ssh/id_ed25519.pub
+[diff]
+	tool = nvimdiff
+	submodule = log
+[merge]
+	tool = nvimmerge
+[difftool "nvimdiff"]
+	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
+[mergetool "nvimmerge"]
+	cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /======='
+[alias]
+	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
+	cleanorig = !find -type f -name \"*.orig\" -delete
+	l = log --graph
+	ld = log --graph --cc
+	desc = describe --tags --always --dirty
+	su = submodule update --init --recursive
+	pushf = push --force-with-lease
+	wip = commit -a --no-verify -m 'WIP'
+	ammend = commit --amend
+	poke = ! git commit --allow-empty -m 'Poke CI' && git push
+[advice]
+	detachedHead = false
+[core]
+	autocrlf = input
+[push]
+	default=current
+[pull]
+	default=current
+[submodule]
+	recurse = false
+[status]
+	submodulesummary = 1
+[url "ssh://git@github.com"]
+	pushInsteadOf = https://github.com
+[gpg]
+	format = ssh

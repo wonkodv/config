@@ -1,13 +1,13 @@
 default:
-	echo "install"
+	echo "use make install"
 
 install: generated/bashrc generated/bash_profile
-	cp -i $(PWD)/generated/bashrc $(HOME)/.bashrc
-	cp -i $(PWD)/generated/bash_profile $(HOME)/.bash_profile
-
-diff:
-	diff $(PWD)/generated/bashrc $(HOME)/.bashrc || true
-	diff $(PWD)/generated/bash_profile $(HOME)/.bash_profile || true
+	ln -i -s $(PWD)/generated/bashrc ~/.bashrc
+	ln -i -s $(PWD)/generated/bash_profile ~/.bash_profile
+	ln -i -s $(PWD)/ssh-config ~/.ssh/config
+	ln -i -s $(PWD)/gitconfig ~/.gitconfig
+	touch ~/.bashrc_local
+	touch ~/.bash_profile_local
 
 generated/%:
 	mkdir -p generated
@@ -20,3 +20,5 @@ generated/%:
 
 clean:
 	rm -rf generated/
+
+.PHONY: clean install default diff

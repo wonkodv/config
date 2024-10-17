@@ -101,13 +101,13 @@ o(){
 if [ -n "$WSL_DISTRO_NAME" ]
 then
     function o() {
-        w=$(wslpath -wa "$1")
-        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Start-Process "$w"
+        w=$(wslpath -wa "$1" | sed "s/'/''/")
+        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Start-Process "'${w}'"
     }
 
     function x() {
         w=$(wslpath -wa "$1")
-        /mnt/c/Windows/SysWOW64/explorer.exe /select, "$w"
+        /mnt/c/Windows/SysWOW64/explorer.exe /select, "${w}"
         true # because explorer.exe has the weirdest return codes :/
     }
 fi

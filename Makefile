@@ -7,6 +7,7 @@ install: generated/bashrc generated/bash_profile
 	ln -i -s $(PWD)/gitconfig ~/.gitconfig                  || true
 	mkdir -p ~/.config/nix
 	ln -i -s $(PWD)/nix.conf ~/.config/nix/nix.conf         || true
+	ln -i -s $(PWD)/nvim ~/.config/nvim                     || true
 	touch ~/.bashrc_local
 	touch ~/.bash_profile_local
 

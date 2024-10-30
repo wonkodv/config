@@ -30,8 +30,11 @@ touch ~/.bashrc_local
 touch ~/.bash_profile_local
 [ -d ~/code/bashjump ] || git clone https://github.com/wonkodv/bashjump ~/code/bashjump
 
-command -v nix > /dev/null || sh <(curl -L https://nixos.org/nix/install) --daemon
+command -v nix > /dev/null || sh <(curl -L https://nixos.org/nix/install) --no-daemon
 
-nix profile list | grep $PWD >/dev/null || nix profile install .#dev
+# we don't know the version of `nix` so we only let `.#nix` touch the profile to
+# avoid incompatibillities if `nix` is older or newer. after profile install, we
+# should be good as the profile comes early in PATH
+nix run ".#nix" profile list | grep $PWD >/dev/null || nix run ".#nix" profile install ".#dev"
 
 

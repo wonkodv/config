@@ -99,6 +99,11 @@
           name = "werkstatt";
           paths = deps.desktop;
         };
+
+        apps.nix = {
+            type = "app";
+            program = "${pkgs.nix}/bin/nix";
+        };
       }
     );
 }

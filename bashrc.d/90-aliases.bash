@@ -28,6 +28,12 @@ alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"
 
+function git_id() {
+    read -e -p "Email: "  -i wonko@hanstool.org email
+    git config --local user.email $email
+    read -e -p "User: "  -i Wonko name
+    git config --local user.name $name
+}
 
 alias ?="_status"
 function _status() {

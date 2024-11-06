@@ -26,6 +26,7 @@
 	autocrlf = input
 [push]
 	default=current
+	autoSetupRemote=true
 [pull]
 	default=current
 [submodule]

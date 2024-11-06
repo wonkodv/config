@@ -100,7 +100,6 @@ let $EDITOR="nvr --remote-tab-wait"
 " let $PAGER="cat"
 
 set backupdir-=.
-behave xterm
 
 set backspace=eol,indent,start
 set backup

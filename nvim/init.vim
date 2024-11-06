@@ -54,6 +54,7 @@ augroup myautocommands
     au BufReadPost,BufNewFile .tags.*                   setlocal filetype=tags
     au BufReadPost,BufNewFile *.lds                     setlocal filetype=ld
     au BufReadPost,BufNewFile *.md                      setlocal filetype=markdown
+    au BufReadPost,BufNewFile *.icf                     setlocal filetype=iarlinker
     au BufReadPost,BufNewFile *.mk                      setlocal filetype=make
     au BufReadPost,BufNewFile */.git/*                  setlocal bufhidden=wipe
     autocmd FileType      gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
@@ -799,8 +800,12 @@ inoremap         <C-6>       <ESC>6<C-W><C-W>
 
 " terminals are dumb, C-H is C-BS.
 inoremap        <C-H>       <c-W>
-inoremap        <C-BS>       <c-W>
+inoremap        <C-BS>      <c-W>
 inoremap        <C-W>       <cmd>echo "DONT"<CR>
+cnoremap        <C-H>       <c-W>
+cnoremap        <C-BS>      <c-W>
+cnoremap        <C-W>       <cmd>echo "DONT"<CR>
+
 "vip:'<,'>sort /\%28v/
 
 function! LspMappings()
@@ -944,6 +949,12 @@ for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
 end
 EOF
 " }}}
+"
+
+if filereadable(expand('<sfile>:h').'/local.vim')
+    exe "source ".expand('<sfile>:h').'/local.vim'
+endif
+
 " vim:foldmethod=marker:
 set secure
 nohlsearch

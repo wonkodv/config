@@ -3,3 +3,4 @@ plugged/
 autoload/plug.vim.old
 .index
 *.spl
+local.vim

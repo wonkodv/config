@@ -35,6 +35,10 @@ command -v nix > /dev/null || sh <(curl -L https://nixos.org/nix/install) --no-d
 # we don't know the version of `nix` so we only let `.#nix` touch the profile to
 # avoid incompatibillities if `nix` is older or newer. after profile install, we
 # should be good as the profile comes early in PATH
-nix run ".#nix" profile list | grep $PWD >/dev/null || nix run ".#nix" profile install ".#dev"
-
-
+if nix run ".#nix" profile list | grep $PWD >/dev/null
+then
+    # best intrface out there !!
+    nix run .#nix -- profile upgrade "$( nix run .#nix -- profile list --json | jq -r ".elements | to_entries | .[] | select( .value.originalUrl == \"git+file://$PWD\") | .key " )"
+else
+    nix run ".#nix" -- profile install ".#dev"
+fi

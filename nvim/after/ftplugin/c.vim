@@ -1,4 +1,8 @@
-setlocal foldmethod=syntax
+if getfsize(expand("%")) < 1000000
+  setlocal foldmethod=syntax
+else
+  setlocal foldmethod=indent
+endif
 setlocal formatoptions-=c
 setlocal formatoptions-=o
 

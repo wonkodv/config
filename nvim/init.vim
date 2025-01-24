@@ -125,10 +125,10 @@ set foldlevelstart=99
 set foldmethod=indent " syntax can be really expensive on large files
 set foldopen=insert,jump,mark,percent,quickfix,search,tag,undo
 set formatoptions=rqn1j2
-if executable("rg")
-  set grepprg=rg\ --vimgrep
-  set grepformat=%f:%l:%c:%m
-endif
+"" if executable("rg")
+""   set grepprg=rg\ --vimgrep
+""   set grepformat=%f:%l:%c:%m
+"" endif
 set hidden
 set history=100
 set hlsearch
@@ -821,6 +821,7 @@ nnoremap <buffer> <space>f           <cmd>lua vim.lsp.buf.format()<CR>
 vnoremap <buffer> <space>f           <cmd>lua vim.lsp.buf.format()<CR>
 nnoremap <buffer> <space>q           <cmd>lua vim.diagnostic.setqflist()<CR>
 nnoremap <buffer> <space>r           <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <buffer> <space>s           <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <buffer> <space>wa          <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
 nnoremap <buffer> <space>wl          <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
 nnoremap <buffer> <space>wr          <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>

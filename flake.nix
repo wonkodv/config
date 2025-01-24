@@ -3,17 +3,20 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils?ref=c1dfcf08411b08f6b8615f7d8971a2bfa81d5e8a";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/24.05";
   };
   outputs =
     {
       self,
       nixpkgs,
+      nixpkgs-stable,
       flake-utils,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
 
         deps = with pkgs; rec {
           dev = [
@@ -26,13 +29,14 @@
             git
             gnumake
             gnupg
+            jq
             nix # replace the old one shipped with the distro
             jq
             neovim
             neovim-remote
             nixfmt-rfc-style
-            # python3
-            # python3Packages.pynvim
+            python3
+            python3Packages.pynvim
             ripgrep
             sqlite
             universal-ctags
@@ -55,7 +59,8 @@
             ++ [
               blueman
               calibre
-              chromium
+              cameractrls
+              pkgs-stable.chromium # has to match GPU Drivers
               evince
               feh
               firefox
@@ -68,7 +73,6 @@
               mpc-cli
               mpd
               mpd-mpris
-              nextcloud-client
               numlockx
               paprefs
               pcsctools
@@ -78,6 +82,7 @@
               rsync
               thunderbird
               typst
+              vlc
               xclip
               xournalpp
               xsane
@@ -87,17 +92,17 @@
       in
       rec {
         packages.dev = pkgs.symlinkJoin {
-          name = "Wonkos Develop Tools";
+          name = "Wonko's Develop Tools";
           paths = deps.dev;
         };
 
         packages.python = pkgs.symlinkJoin {
-          name = "Wonkos Python Tools";
+          name = "Wonko's Python Tools";
           paths = deps.python;
         };
 
         packages.desktop = pkgs.symlinkJoin {
-          name = "werkstatt";
+          name = "Wonko's Desktop Tools";
           paths = deps.desktop;
         };
 

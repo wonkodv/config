@@ -20,10 +20,16 @@ alias rsync='rsync --progress'
 alias shred='shred -uz'
 alias sudo='sudo '
 
+function run(){
+    local prog=$1
+    shift
+    nix run "github:NixOS/nixpkgs/24.05#$prog" -- "$@"
+}
+
 alias icat="kitty +kitten icat"
 alias bd="lsblk --output name,partlabel,label,mountpoints,fstype,size,fsavail,fsuse%,model,partuuid,uuid,pttype"
 alias l='ls --color=auto -lh --file-type --hyperlink=auto'
-alias f='feh --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
+alias f='feh --draw-actions --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
 alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"

@@ -4,7 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-mkdir -p ~/code ~/.config
+mkdir -p ~/code ~/.config/nix
 
 function generate() {
     mkdir -p generated

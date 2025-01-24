@@ -1,6 +1,11 @@
-command! Build :Make! cargo run
-command! Test :Make! cargo test --workspace
-command! Check :Make! cargo fmt && cargo clippy
+
+if exists("g:dont_overwrite_build_commands")
+    " asdfg
+else
+    command! Build :Make! cargo run
+    command! Test :Make! cargo test --workspace
+    command! Check :Make! cargo fmt && cargo clippy
+endif
 
 function! FindBuildFile()
     let m = FindInParent(expand("%"), "Cargo.toml")

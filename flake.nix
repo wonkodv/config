@@ -30,7 +30,6 @@
             gnumake
             gnupg
             jq
-            nix # replace the old one shipped with the distro
             jq
             neovim
             neovim-remote

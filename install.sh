@@ -39,8 +39,9 @@ done
 if ! command -v nix > /dev/null
 then
     sh <(curl -L https://nixos.org/nix/install) --no-daemon
-    . /home/mr/.nix-profile/etc/profile.d/nix.sh
 fi
+
+. ~/.nix-profile/etc/profile.d/nix.sh
 
 # we don't know the version of `nix` so we only let `.#nix` touch the profile to
 # avoid incompatibillities if `nix` is older or newer. after profile install, we

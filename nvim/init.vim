@@ -125,10 +125,10 @@ set foldlevelstart=99
 set foldmethod=indent " syntax can be really expensive on large files
 set foldopen=insert,jump,mark,percent,quickfix,search,tag,undo
 set formatoptions=rqn1j2
-"" if executable("rg")
-""   set grepprg=rg\ --vimgrep
-""   set grepformat=%f:%l:%c:%m
-"" endif
+if executable("rg")
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif
 set hidden
 set history=100
 set hlsearch

@@ -25,6 +25,7 @@ generate bashrc
 generate bash_profile
 ln -f -s $PWD/gitconfig     ~/.gitconfig
 ln -f -s $PWD/nvim          ~/.config/
+ln -f -s $PWD/kitty         ~/.config/
 ln -f -s $PWD/nix.conf      ~/.config/nix/nix.conf
 touch ~/.bashrc_local
 touch ~/.bash_profile_local
@@ -44,5 +45,10 @@ then
     # best intrface out there !!
     nix run .#nix -- profile upgrade "$( nix run .#nix -- profile list --json | jq -r ".elements | to_entries | .[] | select( .value.originalUrl == \"git+file://$PWD\") | .key " )"
 else
-    nix run ".#nix" -- profile install ".#dev"
+    if [ -z "$1" ]
+    then
+        echo "specify which profile package to install (dev, desktop, ...)"
+    else
+        nix run ".#nix" -- profile install ".#$1"
+    fi
 fi

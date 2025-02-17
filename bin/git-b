@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import subprocess
+
+def get_local_branches():
+    result = subprocess.check_output(['git', 'branch'], text=True)
+    branches = [branch.strip() for branch in result.split('\n') if branch]
+    return branches
+
+def get_ahead_behind(branch):
+    ahead_result = subprocess.check_output(['git', 'rev-list', '--count', f'origin/HEAD..{branch}'], text=True)
+    behind_result = subprocess.check_output(['git', 'rev-list', '--count', f'{branch}..origin/HEAD'], text=True)
+    ahead = int(ahead_result.strip())
+    behind = int(behind_result.strip())
+    return ahead, behind
+
+def main():
+    subprocess.run(['git', 'fetch', 'origin'])
+    branches = get_local_branches()
+    for branch in branches:
+        if branch.startswith('*'):
+            branch = branch[2:]  # Remove the '* ' from the current branch
+        ahead, behind = get_ahead_behind(branch)
+        print(f'{ahead: 3d}/{behind: <4d} {branch}')
+
+if __name__ == '__main__':
+    main()

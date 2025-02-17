@@ -4,7 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-mkdir -p ~/code ~/.config/nix
+mkdir -p ~/code ~/.config/nix  ~/bin
 
 function generate() {
     mkdir -p generated
@@ -30,6 +30,11 @@ ln -f -s $PWD/nix.conf      ~/.config/nix/nix.conf
 touch ~/.bashrc_local
 touch ~/.bash_profile_local
 [ -d ~/code/bashjump ] || git clone https://github.com/wonkodv/bashjump ~/code/bashjump
+
+for f in bin/*
+do
+  ln -s ${PWD}/$f ~/bin/
+done
 
 if ! command -v nix > /dev/null
 then

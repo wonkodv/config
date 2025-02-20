@@ -30,7 +30,6 @@
             gnumake
             gnupg
             jq
-            jq
             neovim
             neovim-remote
             nixfmt-rfc-style

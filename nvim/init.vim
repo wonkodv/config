@@ -748,6 +748,8 @@ nnoremap <leader>dt          :diffthis<CR>
 nnoremap <leader>e           O<c-a> = <Esc>p
 nnoremap <leader>G           <cmd>tab Git<CR>
 nnoremap         gz          :ZemEdit !<C-R><C-W><CR>zz
+nnoremap         gf          gF
+nnoremap         gF          :e <cfile>
 nnoremap <leader>H           :e <C-R>=expand("%:h")<CR>/
 nnoremap <leader>i           :Import<CR>
 onoremap         i*          :<C-U>call TextObjComment(1)<CR>

@@ -41,7 +41,10 @@ then
     sh <(curl -L https://nixos.org/nix/install) --no-daemon
 fi
 
-. ~/.nix-profile/etc/profile.d/nix.sh
+if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]
+then
+    . ~/.nix-profile/etc/profile.d/nix.sh
+fi
 
 # we don't know the version of `nix` so we only let `.#nix` touch the profile to
 # avoid incompatibillities if `nix` is older or newer. after profile install, we

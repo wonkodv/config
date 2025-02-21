@@ -30,6 +30,7 @@
             gnumake
             gnupg
             jq
+            nix
             neovim
             neovim-remote
             nixfmt-rfc-style
@@ -42,7 +43,7 @@
             unzip
             wget
           ];
-          python = dev ++ [
+          python = [
             python3Packages.black
             python3Packages.isort
             python3Packages.mypy
@@ -51,39 +52,37 @@
             python3Packages.python-lsp-black
             python3Packages.python-lsp-server
           ];
-          desktop =
-            dev
-            ++ python
-            ++ [
+          desktop = [
+              evince
+              feh feh.man
+              firefox
+              keepassxc
+              killall
+              kitty
+              paprefs
+              pstree
+              rsync
+              vlc
+              xclip
+          ];
+          full =
+            [
               blueman
               calibre
               cameractrls
               pkgs-stable.chromium # has to match GPU Drivers
-              evince
-              feh
-              firefox
-              hplip
               inkscape
-              keepassxc
-              killall
-              kitty
               libreoffice
               mpc-cli
               mpd
               mpd-mpris
               numlockx
-              paprefs
               pcsctools
               pinentry
               playerctl
-              pstree
-              rsync
               thunderbird
               typst
-              vlc
-              xclip
               xournalpp
-              xsane
               zbar
             ];
         };
@@ -96,12 +95,17 @@
 
         packages.python = pkgs.symlinkJoin {
           name = "Wonko's Python Tools";
-          paths = deps.python;
+          paths = deps.python ++ deps.dev;
         };
 
         packages.desktop = pkgs.symlinkJoin {
           name = "Wonko's Desktop Tools";
-          paths = deps.desktop;
+          paths = deps.desktop ++ deps.python ++ deps.dev;
+        };
+
+        packages.full = pkgs.symlinkJoin {
+          name = "All of Wonko's Tools";
+          paths = deps.full ++ deps.desktop ++ deps.python ++ deps.dev;
         };
 
         apps.nix = {

@@ -33,7 +33,7 @@ touch ~/.bash_profile_local
 
 for f in bin/*
 do
-  ln -s ${PWD}/$f ~/bin/
+  ln -f -s ${PWD}/$f ~/bin/
 done
 
 if ! command -v nix > /dev/null

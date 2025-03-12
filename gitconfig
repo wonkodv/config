@@ -8,7 +8,7 @@
 [difftool "nvimdiff"]
 	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "nvimmerge"]
-	cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /======='
+	cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
 [alias]
 	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
 	cleanorig = !find -type f -name \"*.orig\" -delete

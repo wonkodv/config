@@ -118,7 +118,7 @@
         };
       };
 
-      app.${system} =  {
+      apps.${system} =  {
         nix = {
           description = "the nix version that install(ed) this flake";
           type = "app";

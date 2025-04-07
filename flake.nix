@@ -17,7 +17,7 @@
     }@inputs:
     let
       inherit (self) outputs;
-      system = "x86_64";
+      system = "x86_64-linux"; # TODO:  make packages and apps work with `forAllSystems` but nixosConfigurations without it
       #       pkgs = nixpkgs.legacyPackages.${system};
       pkgs = import nixpkgs {
         inherit system;
@@ -26,14 +26,6 @@
         };
       };
       pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-      systems = [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
       deps = with pkgs; rec {
         dev = [
           bash-completion
@@ -104,7 +96,7 @@
       };
     in
     {
-      packages = forAllSystems (system: {
+      packages.${system} = {
         dev = pkgs.symlinkJoin {
           name = "Wonko's Develop Tools";
           paths = deps.dev;
@@ -124,19 +116,20 @@
           name = "All of Wonko's Tools";
           paths = deps.full ++ deps.desktop ++ deps.python ++ deps.dev;
         };
-      });
-      apps = forAllSystems (system: {
+      };
+
+      app.${system} =  {
         nix = {
           description = "the nix version that install(ed) this flake";
           type = "app";
           program = "${pkgs.nix}/bin/nix";
         };
-      });
+      };
 
       nixosConfigurations = {
         deepthought = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit system inputs outputs;
+            all-deps = deps.full ++ deps.desktop ++ deps.python ++ deps.dev;
           };
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-e495
@@ -146,6 +139,6 @@
         };
       };
 
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter.${system} = pkgs.nixfmt-rfc-style;
     };
 }

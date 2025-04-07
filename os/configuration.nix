@@ -3,9 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
-  inputs, # from flake
-  outputs, # from the flake
-  system, # from flake
+  all-deps, # from flake
   config,
   lib,
   pkgs,
@@ -174,9 +172,7 @@
     xsane
     git
     neovim
-
-    #   outputs.${system}.packages.full;
-  ];
+  ] ++ all-deps;
 
   nixpkgs.config.packageOverrides = pkgs: {
     xsaneGimp = pkgs.xsane.override { gimpSupport = true; };

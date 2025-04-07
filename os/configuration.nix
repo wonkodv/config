@@ -3,40 +3,27 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
+  inputs, # from flake
+  outputs, # from the flake
+  system, # from flake
   config,
   lib,
   pkgs,
+
   ...
 }:
 {
 
-  imports = [
-  ];
+  imports =
+    [
+    ];
 
-  boot.loader.systemd-boot.enable = true;
-
-  hardware.graphics.enable = true;
-
-  fileSystems."/win" = {
-    device = "/dev/disk/by-partuuid/98b8505d-9a1f-470b-8ce5-61829a0b60d6";
-    fsType = "ntfs";
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
   };
-
-  fileSystems."/".options = [
-    "noatime"
-    "nodiratime"
-    "discard"
-  ];
-  fileSystems."/boot".options = [
-    "noatime"
-    "nodiratime"
-    "discard"
-  ];
-  fileSystems."/home".options = [
-    "noatime"
-    "nodiratime"
-    "discard"
-  ];
+  hardware.graphics.enable = true;
 
   networking.hostName = "deepthought"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -131,7 +118,6 @@
   };
   services.udev.packages = [ pkgs.sane-airscan ];
 
-
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
@@ -188,6 +174,8 @@
     xsane
     git
     neovim
+
+    #   outputs.${system}.packages.full;
   ];
 
   nixpkgs.config.packageOverrides = pkgs: {

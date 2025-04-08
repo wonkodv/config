@@ -193,6 +193,7 @@
   services.pcscd.plugins = [ pkgs.pcsc-cyberjack ];
 
   virtualisation.virtualbox.host.enable = true;
+  boot.kernelParams = [ "kvm.enable_virt_at_load=0" ]; # TODO: workaround because kvm seems to be enabled now and VB don't like it
   users.extraGroups.vboxusers.members = [ "mr" ];
 
   # programs.virt-manager.enable = true;

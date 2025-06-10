@@ -3,14 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/24.05";
+    nixpkgsStable.url = "github:NixOS/nixpkgs/24.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
   outputs =
     {
       self,
       nixpkgs,
-      nixpkgs-stable,
+      nixpkgsStable,
       nixos-hardware,
       flake-utils,
       ...
@@ -25,7 +25,7 @@
           allowUnfree = true;
         };
       };
-      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      pkgsStable = nixpkgsStable.legacyPackages.${system};
       deps = with pkgs; rec {
         dev = [
           bash-completion
@@ -78,7 +78,7 @@
           blueman
           calibre
           cameractrls
-          pkgs-stable.chromium # has to match GPU Drivers
+          pkgsStable.chromium # has to match GPU Drivers
           inkscape
           libreoffice
           mpc-cli
@@ -118,7 +118,7 @@
         };
       };
 
-      apps.${system} =  {
+      apps.${system} = {
         nix = {
           description = "the nix version that install(ed) this flake";
           type = "app";
@@ -130,6 +130,7 @@
         deepthought = nixpkgs.lib.nixosSystem {
           specialArgs = {
             all-deps = deps.full ++ deps.desktop ++ deps.python ++ deps.dev;
+            inherit inputs;
           };
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-e495

@@ -34,6 +34,8 @@ alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"
 
+alias camera_50_hz="cameractrls -d /dev/video2 -c power_line_frequency=50_hz"
+
 function git_id() {
     read -e -p "Email: "  -i wonko@hanstool.org email
     git config --local user.email $email
@@ -91,21 +93,15 @@ function _status() {
 
 o(){
 (
-    if [ $# -gt 3 ]
-    then
-        while [ -n "$1" ]
-        do
-            echo "$1"
-            xdg-open "$1" &> /dev/null
-            shift;
-        done
-    else
-        while [ -n "$1" ]
-        do
+    while [ -n "$1" ]
+    do
+        read -p "Open $1 [Y/n] "
+        if [ "$REPLY" != n ]
+        then
             xdg-open "$1"  &>/dev/null &
-            shift;
-        done
-    fi
+        fi
+        shift;
+    done
 )
 }
 
@@ -122,4 +118,4 @@ then
         /mnt/c/Windows/SysWOW64/explorer.exe /select, "${w}"
         true # because explorer.exe has the weirdest return codes :/
     }
-fi
+    fi

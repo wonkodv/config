@@ -24,7 +24,7 @@
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];   
+  boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.enable = true;
 
   fileSystems."/" =

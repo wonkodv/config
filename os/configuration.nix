@@ -7,6 +7,7 @@
   config,
   lib,
   pkgs,
+  inputs,
 
   ...
 }:
@@ -21,6 +22,11 @@
       allowUnfree = true;
     };
   };
+  nix.registry = {
+    nixpkgs.flake = inputs.nixpkgs; 
+    nixpkgsStable.flake = inputs.nixpkgsStable; 
+  };
+
   hardware.graphics.enable = true;
 
   networking.hostName = "deepthought"; # Define your hostname.

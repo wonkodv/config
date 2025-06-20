@@ -177,6 +177,7 @@
     nextcloud-client
     xsane
     git
+    jre
     neovim
   ] ++ all-deps;
 

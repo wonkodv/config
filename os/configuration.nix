@@ -24,7 +24,7 @@
   };
   nix.registry = {
     nixpkgs.flake = inputs.nixpkgs; 
-    nixpkgsStable.flake = inputs.nixpkgsStable; 
+    #nixpkgsStable.flake = inputs.nixpkgsStable; 
   };
 
   hardware.graphics.enable = true;

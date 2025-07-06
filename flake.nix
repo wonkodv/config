@@ -3,14 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgsStable.url = "github:NixOS/nixpkgs/25.05";
+    #nixpkgsStable.url = "github:NixOS/nixpkgs/25.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
   outputs =
     {
       self,
       nixpkgs,
-      nixpkgsStable,
+      #nixpkgsStable,
       nixos-hardware,
       flake-utils,
       ...
@@ -25,7 +25,7 @@
           allowUnfree = true;
         };
       };
-      pkgsStable = nixpkgsStable.legacyPackages.${system};
+      #pkgsStable = nixpkgsStable.legacyPackages.${system};
       deps = with pkgs; rec {
         dev = [
           bash-completion
@@ -78,7 +78,7 @@
           blueman
           calibre
           cameractrls
-          pkgsStable.chromium # has to match GPU Drivers
+          chromium # has to match GPU Drivers
           inkscape
           libreoffice
           mpc-cli

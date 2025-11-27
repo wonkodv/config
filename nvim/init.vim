@@ -152,16 +152,9 @@ set scrollback=100000
 set scrolloff=3
 set sidescrolloff=3
 set shellpipe=2>&1\|tee
+set shell=/var/run/current-system/sw/bin/bash
 set shiftround
 set shiftwidth=4
-if has('win32') || has('win64')
-    set shell=bash
-    set shellcmdflag=-c
-    set shellquote=
-    set shellxquote=
-    set noshelltemp
-    set shellslash
-endif
 set shortmess=atIT "c
 set showcmd
 set showmode
@@ -911,9 +904,7 @@ lspconfig.rust_analyzer.setup { -- cargo install rust-analyzer
              procMacro = {
                  enable = true
              },
-             checkOnSave = {
-                 allTargets = false,
-             },
+             checkOnSave = true,
          }
      }
 }

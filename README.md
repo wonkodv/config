@@ -1,5 +1,4 @@
-Config Files and scripts
-========================
+# Config Files and scripts
 
 Config files, to be used by symlinking
 

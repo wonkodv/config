@@ -22,7 +22,7 @@
         };
     };
     nix.registry = {
-        nixpkgs.flake = nixpkgs;
+        nixpkgs.flake = inputs.nixpkgs;
         #nixpkgsStable.flake = inputs.nixpkgsStable;
     };
 
@@ -170,7 +170,7 @@
         ];
     };
 
-    environment.systemPackages =
+    environment.systemPackages = 
         with pkgs;
         [
             efibootmgr
@@ -181,7 +181,8 @@
             jre
             neovim
         ]
-        ++ all-deps;
+         ++   (all-deps pkgs);
+
 
     nixpkgs.config.packageOverrides = pkgs: {
         xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
@@ -259,7 +260,7 @@
         fira-code
         fira-code-symbols
         noto-fonts
-        noto-fonts-emoji
+        noto-fonts-color-emoji
     ];
 
     # This option defines the first version of NixOS you have installed on this particular machine,

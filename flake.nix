@@ -20,7 +20,7 @@
         }@inputs:
         let
             depsel =
-                pkgs: with pkgs; rec {
+                pkgs: with pkgs; let
                     dev = [
                         bash-completion
                         colordiff
@@ -75,20 +75,23 @@
                         chromium # has to match GPU Drivers
                         inkscape
                         libreoffice
-                        mpc-cli
+                        mpc
                         mpd
                         mpd-mpris
                         numlockx
-                        pcsctools
-                        pinentry
+                        pcsc-tools
+                        pinentry-gnome3
                         playerctl
+                        steam
                         thunderbird
                         typst
                         xournalpp
                         zbar
                     ];
-                    all = dev + python + desktop + full;
-                };
+                    in 
+                     {inherit dev python desktop full;
+                     all = dev ++ python ++ desktop ++ full;
+                     };
         in
         flake-utils.lib.eachDefaultSystem (
             system:

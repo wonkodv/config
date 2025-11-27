@@ -2,83 +2,83 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
+    config,
+    lib,
+    pkgs,
+    modulesPath,
+    ...
 }:
 
 {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
-
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "xhci_pci"
-    "ahci"
-    "usb_storage"
-    "usbhid"
-    "rtsx_pci_sdmmc"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
-  boot.loader.systemd-boot.enable = true;
-
-  fileSystems."/" =
-    #{ device = "/dev/disk/by-uuid/d7a7df3d-20e2-43b8-bc6b-a90586dd893a";
-    {
-      device = "/dev/disk/by-partlabel/wd-nixos";
-      fsType = "ext4";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
-    };
-
-  fileSystems."/boot" =
-    #{ device = "/dev/disk/by-uuid/8073-48A1";
-    {
-      device = "/dev/disk/by-partlabel/wd-efi";
-      fsType = "vfat";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
-    };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-partlabel/wd-home";
-    fsType = "ext4";
-    options = [
-      "noatime"
-      "nodiratime"
-      "discard"
+    imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
     ];
-  };
 
-  fileSystems."/win" = {
-    device = "/dev/disk/by-partuuid/98b8505d-9a1f-470b-8ce5-61829a0b60d6";
-    fsType = "ntfs";
-  };
+    boot.initrd.availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "usbhid"
+        "rtsx_pci_sdmmc"
+    ];
+    boot.initrd.kernelModules = [ ];
+    boot.kernelModules = [ "kvm-amd" ];
+    boot.extraModulePackages = [ ];
+    boot.loader.systemd-boot.enable = true;
 
-  swapDevices = [
-    { device = "/dev/disk/by-partlabel/wd-swap"; }
-  ];
+    fileSystems."/" =
+        #{ device = "/dev/disk/by-uuid/d7a7df3d-20e2-43b8-bc6b-a90586dd893a";
+        {
+            device = "/dev/disk/by-partlabel/wd-nixos";
+            fsType = "ext4";
+            options = [
+                "noatime"
+                "nodiratime"
+                "discard"
+            ];
+        };
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0f3u1u1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
+    fileSystems."/boot" =
+        #{ device = "/dev/disk/by-uuid/8073-48A1";
+        {
+            device = "/dev/disk/by-partlabel/wd-efi";
+            fsType = "vfat";
+            options = [
+                "noatime"
+                "nodiratime"
+                "discard"
+            ];
+        };
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    fileSystems."/home" = {
+        device = "/dev/disk/by-partlabel/wd-home";
+        fsType = "ext4";
+        options = [
+            "noatime"
+            "nodiratime"
+            "discard"
+        ];
+    };
+
+    fileSystems."/win" = {
+        device = "/dev/disk/by-partuuid/98b8505d-9a1f-470b-8ce5-61829a0b60d6";
+        fsType = "ntfs";
+    };
+
+    swapDevices = [
+        { device = "/dev/disk/by-partlabel/wd-swap"; }
+    ];
+
+    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+    # (the default) this is the recommended approach. When using systemd-networkd it's
+    # still possible to use this option, but it's recommended to use it in conjunction
+    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+    networking.useDHCP = lib.mkDefault true;
+    # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
+    # networking.interfaces.enp5s0f3u1u1.useDHCP = lib.mkDefault true;
+    # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
+
+    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

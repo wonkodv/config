@@ -1,4 +1,3 @@
-if [ -f ~/.todo ]
-then
+if [ -f ~/.todo ]; then
     cat ~/.todo
 fi

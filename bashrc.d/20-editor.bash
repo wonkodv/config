@@ -1,5 +1,4 @@
-if [ -n "$NVIM" ]
-then
+if [ -n "$NVIM" ]; then
     # once nvr checks for $NVIM, the --servername can be removed
     export EDITOR="nvr --nostart --servername $NVIM --remote-tab-wait-silent"
     alias vim="nvr --nostart --servername $NVIM"
@@ -7,8 +6,7 @@ then
         nvr --nostart --servername "$NVIM" -c ":mark p" &>/dev/null
         sleep 0.05
     }
-elif [ -n "$NVIM_LISTEN_ADDRESS" ]
-then
+elif [ -n "$NVIM_LISTEN_ADDRESS" ]; then
     export EDITOR="nvr --nostart --servername $NVIM_LISTEN_ADDRESS --remote-tab-wait-silent"
     alias vim="nvr --nostart --servername $NVIM_LISTEN_ADDRESS"
     function _prompt_marker {

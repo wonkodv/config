@@ -4,8 +4,6 @@ shopt -s gnu_errfmt
 shopt -s checkjobs
 shopt -s progcomp_alias
 
-
-
 # set -o vi
 # bind '"\e.": yank-last-arg'
 # bind '"\e_": yank-last-arg'

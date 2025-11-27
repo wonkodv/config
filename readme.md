@@ -2,11 +2,7 @@ Wonko's Home Directory
 
 configure bash, git, nvim, nix and install some packages
 
-
-
-Install
--------
-
+## Install
 
 ```bash
 git clone https://github.com/wonkodv/werkzeugkasten ~/code/config

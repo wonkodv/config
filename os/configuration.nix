@@ -212,6 +212,11 @@
     # virtualisation.libvirtd.enable = true;
     # virtualisation.spiceUSBRedirection.enable = true;
 
+    programs.steam = {
+        enable = true;
+    };
+
+
     # List services that you want to enable:
     systemd.services.numLockOnTty = {
         wantedBy = [ "multi-user.target" ];

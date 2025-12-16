@@ -20,7 +20,10 @@
         }@inputs:
         let
             depsel =
-                pkgs: with pkgs; let
+                pkgs:
+                with pkgs;
+                let
+
                     dev = [
                         bash-completion
                         colordiff
@@ -45,6 +48,7 @@
                         unzip
                         wget
                     ];
+
                     python = [
                         python3Packages.black
                         python3Packages.isort
@@ -54,6 +58,7 @@
                         python3Packages.python-lsp-black
                         python3Packages.python-lsp-server
                     ];
+
                     desktop = [
                         evince
                         feh
@@ -68,6 +73,7 @@
                         vlc
                         xclip
                     ];
+
                     full = [
                         blueman
                         calibre
@@ -88,10 +94,16 @@
                         xournalpp
                         zbar
                     ];
-                    in 
-                     {inherit dev python desktop full;
-                     all = dev ++ python ++ desktop ++ full;
-                     };
+                in
+                {
+                    inherit
+                        dev
+                        python
+                        desktop
+                        full
+                        ;
+                    all = dev ++ python ++ desktop ++ full;
+                };
         in
         flake-utils.lib.eachDefaultSystem (
             system:
@@ -117,6 +129,8 @@
             {
                 packages = {
                     legacyPackages = pkgs;
+
+                    inherit fmt;
 
                     dev = pkgs.symlinkJoin {
                         name = "Wonko's Develop Tools";
@@ -176,7 +190,6 @@
                 };
 
                 formatter = fmt;
-
             }
         )
         // {

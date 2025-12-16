@@ -3,9 +3,10 @@ setlocal spelllang=en
 setlocal complete+=kspell
 setlocal wrap
 setlocal linebreak
-setlocal textwidth=0
+setlocal textwidth=100
 setlocal wrapmargin=3
 setlocal comments=b:*,b:-,n:>
+setlocal comments=n:>
 setlocal formatoptions+=r
 setlocal formatoptions+=o
 

@@ -5,7 +5,7 @@ alias cp='cp -i'
 alias crontab='crontab -i'
 alias dd='dd status=progress'
 alias df='df -h'
-alias diff='colordiff'
+alias diff='git diff --no-index'
 alias du='du -c -h'
 alias free='free -h'
 alias grep='grep --color=auto'
@@ -50,24 +50,6 @@ function _status() {
     local red="\e[1;31m"
     local clear="\e[0m"
 
-    if [[ $(jobs | wc -l) -gt 0 ]]; then
-        echo -e "${bold}Jobs${clear}"
-        jobs
-    fi
-
-    if [ -n "$VIRTUAL_ENV" ]; then
-        echo -en "${bold}VENV${clear}    "
-        echo "$VIRTUAL_ENV"
-    fi
-
-    if [ -n "$SSH_CLIENT" ]; then
-        echo -en "${bold}SSH${clear}   "
-        echo "$SSH_CONNECTION"
-    fi
-
-    echo -en "${bold}ID${clear}      "
-    [ "$USER" == root ] && echo -ne ${red}
-    echo -e $USER${clear}@$HOSTNAME
 
     if [ -r /sys/class/power_supply/BAT0/ ]; then
         echo -en "${bold}BATTERY${clear} "
@@ -75,16 +57,45 @@ function _status() {
         now=$(cat /sys/class/power_supply/BAT0/energy_now)
         echo -n "$((now * 100 / full))% "
         cat /sys/class/power_supply/BAT0/status
+        echo
+    fi
+
+
+    if [[ $(jobs |wc -l ) -gt 0 ]]
+    then
+        echo -e "${bold}Jobs${clear}"
+        jobs
+        echo
+    fi
+
+    if [ -n "$VIRTUAL_ENV" ]
+    then
+        echo -en "${bold}VENV${clear}    "
+        echo "$VIRTUAL_ENV"
+        echo
+    fi
+
+    if [ -n "$SSH_CLIENT" ]
+    then
+        echo -en "${bold}SSH${clear}   "
+        echo "$SSH_CONNECTION"
+        echo
     fi
 
     if git rev-parse &>/dev/null; then
         echo -e "${bold}GIT${clear}"
+        git --no-pager -c color.status=always stash list
+        git --no-pager -c color.status=always log --graph --oneline origin/develop @{upstream} $(git merge-base origin/develop HEAD)^..HEAD
         git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M
-        git --no-pager stash list
+        echo
     fi
 
     echo -en "${bold}PWD${clear}     "
     echo "$PWD"
+
+    echo -en "${bold}ID${clear}      "
+    [ "$USER" == root ] && echo -ne ${red}
+    echo -e $USER${clear}@$HOSTNAME
 }
 
 o() {

@@ -28,7 +28,6 @@ let g:loaded_python_provider = 1
 
 " }}}
 
-
 " ZEM {{{
 let  g:zem_db      =  '.index'
 let  g:zem_height   =  30
@@ -59,12 +58,11 @@ augroup myautocommands
     au BufReadPost,BufNewFile */.git/*                  setlocal bufhidden=wipe
     autocmd FileType      gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
     au QuickFixCmdPost    *                             setlocal cmdheight=2 | call QFSigns()
-    au TermOpen           *                             setlocal statusline=TERM:%{b:term_title}
+    au TermOpen           *                             setlocal statusline=TERM:%{b:term_title}|set nospell | set number
     au FileType           qf                            setlocal wrap
     au BufWritePost       *                             call AutoChmod(expand("<afile>"))
     autocmd BufReadPost   *                             lcd .  " update window title relative paths
     " autocmd BufReadPost   *                             call JumpToLastEdit()
-
 augroup END
 
 " }}}
@@ -96,9 +94,6 @@ highlight link LspReferenceWrite Match
 
 " Settings {{{
 "
-"pip install neovim neovim-remote
-let $EDITOR="nvr --remote-tab-wait"
-" let $PAGER="cat"
 
 set backupdir-=.
 
@@ -106,8 +101,9 @@ set backspace=eol,indent,start
 set backup
 set breakindent
 set cedit=<C-F>
-set cinkeys=0{,0},0),:,0#,!^F,o,O,e
-set cinoptions=L0,l1,b1,t0,(0,#0
+set cinkeys=0{,0},0),0],!^F,o,O
+"set cinoptions=L0,l1,b1,t0,(0,#0
+set cinoptions=L0,l1,b1,t0,(0,#1
 set clipboard=unnamedplus
 set complete=.,w,b,u,t
 set completeopt=menuone,noselect ",longest ",preview
@@ -134,10 +130,12 @@ set history=100
 set hlsearch
 set ignorecase
 set incsearch
+set indentkeys=0{,0},0),0],!^F,o,O
 set langmenu=en
 set laststatus=2
 set list
 set listchars=tab\:>-,trail\:~,precedes\:<,extends\:>,nbsp:+
+set listchars=tab\:\ \ ,trail\:~,precedes\:<,extends\:>,nbsp:+
 set linebreak
 set makeprg=make\ -rR
 set matchpairs=(:),{:},[:],<:>
@@ -147,10 +145,13 @@ set nowrap
 set nrformats=alpha,hex,unsigned
 set number
 set path=**,.,,
+set previewheight=4
+"set relativenumber
 set ruler
 set scrollback=100000
 set scrolloff=3
 set sidescrolloff=3
+set signcolumn=number
 set shellpipe=2>&1\|tee
 set shell=/var/run/current-system/sw/bin/bash
 set shiftround
@@ -165,7 +166,7 @@ set smarttab
 set softtabstop=4
 set spell
 set spelllang=en
-set statusline=%<%f%(\ [%{SCVCSStatusLine()}]%)%=%(\ [%M%R%H%W%q]%)\ [%Y,%{&enc},%{&ff}]\ %6(%c%V,%l%)%(\ %P%)\ "Comment to protect WS at EOL
+set statusline=%<%f%=%(\ [%M%R%H%W%q]%)\ [%Y,%{&enc},%{&ff}]\ %6(%c%V,%l%)%(\ %P%)\ "Comment to protect WS at EOL
 set tabpagemax=20
 set tabstop=4
 set tags=.tags
@@ -180,7 +181,7 @@ set undoreload=1000
 set updatetime=300
 set viminfo='200,<50,s10,h,rA:,rB:,h,
 set virtualedit=all
-set wildignore=**__pycache__**
+set wildignore=**__pycache__**,result/,
 set wildmenu
 set wildmode=longest:full,full
 set winheight=15
@@ -371,7 +372,7 @@ function! FindBuildFile(bang)
     if a:bang != '!'
         return FindInParent(expand("%"), "Makefile")
     fi
-    return Makefile
+    return "Makefile"
 endfunction
 
 python3 << EOF
@@ -413,37 +414,6 @@ function! AllZemMatches(term)
       call add(list, e)
     endfor
     call setqflist([], ' ', {"title":a:term, 'items':list, 'nr':'$'})
-endfunction
-
-" }}}
-
-" Status Line {{{
-
-function! GetStatusLine()
-    return ""
-endfunction
-
-function! SCVCSStatusLine()
-    if ! exists( "b:status" )
-        let b:status = GetStatusLine()
-    endif
-    return b:status
-endfunction
-
-function! UpdateSCVCSStatusLine()
-    if exists( "b:status" )
-        unlet b:status
-    endif
-endfunction
-
-" }}}
-
-" {{{ QuickFix
-
-
-function! QFErrorResolve()
-    echoerr "QFErrorResolve not implemented for ".&ft
-    " implemented in filetypes
 endfunction
 
 " }}}
@@ -624,25 +594,34 @@ EOF
 endif
 " }}}
 
+function! TerminalOpen()
+    let terminals = filter(getbufinfo({'bufloaded': 1}), 'v:val.name =~ "term://"')
+    if !empty(terminals)
+        let maxbuf = max(map(terminals, 'v:val.bufnr'))
+        exe ':b ' . maxbuf
+    else
+        exe ':terminal'
+    endif
+endfunction
+" }}} Functions
+
 " Commands {{{
 
 command!                                 Abort           :call rpcnotify(b:nvr[0], 'Exit', 1)
-command!        -nargs=? -complete=file  AF              :exe ":normal a".<q-args>
 command! -bang  -nargs=+                 DS              :call DiffSibling(<q-bang>, <f-args>)
 command! -bang  -nargs=+                 ES              :call EditSibling(<q-bang>, <f-args>)
-command!                                 FileIdent       :call FileIdent()
-command!                                 Mkdir           :exe "!mkdir -p ".expand("%:h")
-command!                                 MKDIR           :exe "!mkdir -p ".expand("%:h")
 command! -bang  -nargs=*  -complete=file Make            :call Make(<q-bang>, <q-args>)
 command!                                 RM              :!rm -f %
 command!        -nargs=1  -complete=file Rename          :let b:_old_f=expand("%") | :file <args> | :call system("mkdir -p ".expand("%:h")) |  :w | :e | :call system("rm -f ".b:_old_f)
-command!                                 Source          :source $MYVIMRC | :silent source .nvimrc | :e
 command!                                 Suw             :call SudoWrite()
 command!        -nargs=1                 DefaultFile     :if argc()==0&&bufnr()==1 | :find <args> | :endif
-
+command!                                 Write           :w ++p
 command!                                 Build           :Make
 command!                                 Test            :Make test
 command!                                 Check           :Make check
+command!                                 Terminal        call TerminalOpen()
+command!                                 TERMINAL        call TerminalOpen()
+command!                                 T               call TerminalOpen()
 
 function! LspCommands()
 
@@ -690,14 +669,14 @@ cnoremap         <C-R><C-R>  <C-R>+
 inoremap         <C-R><C-R>  <C-R>+
 nnoremap         <C-S>       :wa<CR>
 inoremap         <C-S>       <ESC>:update<CR>
-inoremap         <C-SPACE>   <C-X><C-U>
+inoremap         <C-SPACE>   <C-X><C-O>
 nnoremap         <C-W>a      :cclose<CR>
 tnoremap         <Esc>       <C-\><C-n>
 nmap             <F2>        :cprev<CR><F3>
 nmap     <leader><F2>        :cpf<CR><F3>
 nnoremap         <F3>        zz<cmd>let b:cc=execute(':cc')<CR><cmd>cc<CR>zz
 nmap     <leader><F3>        :call QFErrorResolve()<CR>
-tmap     <leader><F3>        <cmd>cbuffer<CR><F3>
+nmap     <leader><F3>        <cmd>cbuffer<CR><F3>
 nmap             <F4>        :cnext<CR><F3>
 nmap     <leader><F4>        :cnf<CR><F3>
 imap             <F2>        <ESC><F2>
@@ -713,6 +692,8 @@ nnoremap <leader><F6>        <cmd>TestAll<CR>
 nnoremap         <F7>        gg:Check<CR>
 nnoremap <leader><F7>        gg:CheckAll<CR>
 nnoremap <leader><leader>    :silent python3 edit_related_file()<CR>
+nnoremap         [;          0<CMD>?: ; <CR><CMD>nohlsearch<CR>
+nnoremap         ];          0<CMD>/: ; <CR><CMD>nohlsearch<CR>
 vnoremap         >           >gv
 vnoremap         <           <gv
 nnoremap <leader>?           :call MatchAdd("<C-R><C-W>")<CR>
@@ -739,6 +720,7 @@ vnoremap <leader>dp          :diffput<CR>
 nnoremap <leader>du          :diffupdate<CR>
 nnoremap <leader>dt          :diffthis<CR>
 nnoremap <leader>e           O<c-a> = <Esc>p
+nnoremap  <space>f           <cmd>update<cr><cmd>silent ! $NIX_FMT %<CR>
 nnoremap <leader>G           <cmd>tab Git<CR>
 nnoremap         gz          :ZemEdit !<C-R><C-W><CR>zz
 nnoremap         gf          gF
@@ -760,7 +742,7 @@ nnoremap <leader>R           :Rename <C-R>=expand("%")<CR>
 vnoremap <leader>s           ""y:%s/<C-R>=substitute(escape(@", '?\.*$^~[/'), '\_s\+', '\\_s\\+', 'g')<CR>/<C-R>=substitute(escape(@", '?\.*$^~[/'), '\_s\+', '\\_s\\+', 'g')<CR>/gc<left><left><left>
 nnoremap <leader>s           ""yiw:%s/\<<C-R>=substitute(escape(@", '?\.*$^~[/'), '\_s\+', '\\_s\\+', 'g')<CR>\>/<C-R>=substitute(escape(@", '?\.*$^~[/'), '\_s\+', '\\_s\\+', 'g')<CR>/gc<left><left><left>
 noremap  <leader>S           :%s/[ \r\t]\+$//e<CR>
-nnoremap <leader>T           :tabedit<CR>:terminal<CR>
+nnoremap <leader>T           :tabedit<CR>:call TerminalOpen()<CR>
 nnoremap <leader>t           :tabnew<CR>:set buftype=nofile<CR>
 nnoremap <leader>v           <cmd>grep "\b<C-R><C-W>\b"
 nnoremap         Z           :Zem<CR>
@@ -793,13 +775,14 @@ inoremap         <C-5>       <ESC>5<C-W><C-W>
 inoremap         <C-6>       <ESC>6<C-W><C-W>
 
 
-" terminals are dumb, C-H is C-BS.
-inoremap        <C-H>       <c-W>
-inoremap        <C-BS>      <c-W>
+" CTRL-W is a bad habbit, it closed so many tabs
 inoremap        <C-W>       <cmd>echo "DONT"<CR>
-cnoremap        <C-H>       <c-W>
-cnoremap        <C-BS>      <c-W>
 cnoremap        <C-W>       <cmd>echo "DONT"<CR>
+
+
+nnoremap        <F11> <cmd>earlier<CR>
+nnoremap        <F12> <cmd>later<CR>
+
 
 "vip:'<,'>sort /\%28v/
 
@@ -814,6 +797,7 @@ vnoremap <buffer> <space>a           <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <buffer> <space>e           <cmd>lua vim.diagnostic.open_float({scope="line"})<CR>
 nnoremap <buffer> <space>f           <cmd>lua vim.lsp.buf.format()<CR>
 vnoremap <buffer> <space>f           <cmd>lua vim.lsp.buf.format()<CR>
+nnoremap <buffer> <space>h           <cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>
 nnoremap <buffer> <space>q           <cmd>lua vim.diagnostic.setqflist()<CR>
 nnoremap <buffer> <space>r           <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <buffer> <space>s           <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
@@ -855,14 +839,131 @@ end
 vim.diagnostic.config({
         virtual_text = false,
         signs = true,
-        update_in_insert = false,
+        float = true,
+        update_in_insert = true,
         underline = false,
         severity_sort = true,
 })
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+      vim.api.nvim_set_hl(0, group, {})
+end
 
-
+-- {{{ Rust
+if vim.fn.executable("cargo-hippie-with-clippy") then
+    clippy = "hippie-with-clippy"
+else
+    clippy = "clippy"
+end
 local lspconfig = require'lspconfig'
 
+
+lspconfig.rust_analyzer.setup { -- cargo install rust-analyzer
+    on_attach = on_attach,
+    settings = {
+        ["rust-analyzer"] = {
+            imports = {
+                granularity = {
+                    group = "item",
+                },
+                group = {
+                     enable = true,
+                },
+             },
+            cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+            },
+            rustc = {
+                source = "/Users/matthias.riegel/pro/rust/Cargo.toml",
+            },
+            completion = {
+                postfix = {
+                    enabled = true,
+                },
+                privateEditable = {
+                    enabled = true,
+                },
+            },
+            hover = {
+                actions = {
+                    references = {
+                        enabled = true,
+                    },
+                },
+            },
+            check = {
+                command = clippy,
+            },
+            diagnostics = {
+                disabled = {
+                    "unlinked-file",
+                    "inactive-code",
+                },
+            },
+         }
+     }
+}
+
+ -- require"rust-tools".setup{
+ --   server = {
+ --     on_attach = function(_, bufnr)
+ --      --   vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr(#{timeout_ms:500})')
+ --         vim.fn['LspMappings']()
+ --         vim.fn['LspCommands']()
+ -- 
+ --       -- Hover actions
+ --       vim.keymap.set("n", "K", require"rust-tools".hover_actions.hover_actions, { buffer = bufnr })
+ --       -- Code action groups
+ --       vim.keymap.set("n", "<space>a", require"rust-tools".code_action_group.code_action_group, { buffer = bufnr })
+ --     end,
+ --     }
+ --     settings = {
+ --         ["rust-analyzer"] = {
+ --             cargo = {
+ --                 allFeatures = true,
+ --                 loadOutDirsFromCheck = true,
+ --             },
+ --             rustc = {
+ --                 source = "/Users/matthias.riegel/pro/rust/Cargo.toml",
+ --             },
+ --             completion = {
+ --                 privateEditable = {
+ --                     enabled = true,
+ --                 },
+ --             },
+ --             hover = {
+ --                 actions = {
+ --                     references = {
+ --                         enabled = true,
+ --                     },
+ --                 },
+ --             },
+ --             check = {
+ --                 command = "hippie-with-clippy",
+ --             },
+ --             diagnostics = {
+ --                 disabled = {
+ --                     "unlinked-file",
+ --                 },
+ --             },
+ --          }
+ --      }
+ -- }
+
+ -- }}}
+
+-- {{{ Nix
+lspconfig.nil_ls.setup {
+    on_attach = on_attach,
+    settings = {
+        ["nil"] = {
+            formatting = {"nixfmt"},
+        },
+    },
+}
+-- }}}
+
+-- {{{ Python
 lspconfig.pylsp.setup { -- pip install pyls-flake8 pyls-isort python-lsp-black python-lsp-server
     on_attach = on_attach,
     settings = {
@@ -882,47 +983,7 @@ lspconfig.pylsp.setup { -- pip install pyls-flake8 pyls-isort python-lsp-black p
         },
     },
 }
-
-lspconfig.rust_analyzer.setup { -- cargo install rust-analyzer
-    on_attach = on_attach,
-     settings = {
-         ["rust-analyzer"] = {
-             imports = {
-                granularity = {
-                    group = "item"
-                }
-             },
-             cargo = {
-                 allFeatures = true,
-                 loadOutDirsFromCheck = true,
-             },
-             completion = {
-                  autoimport = {
-                      enabled = true,
-                  },
-              },
-             procMacro = {
-                 enable = true
-             },
-             checkOnSave = true,
-         }
-     }
-}
-
--- require"rust-tools".setup{
---   server = {
---     on_attach = function(_, bufnr)
---      --   vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr(#{timeout_ms:500})')
---         vim.fn['LspMappings']()
---         vim.fn['LspCommands']()
---
---       -- Hover actions
---       vim.keymap.set("n", "K", require"rust-tools".hover_actions.hover_actions, { buffer = bufnr })
---       -- Code action groups
---       vim.keymap.set("n", "<space>a", require"rust-tools".code_action_group.code_action_group, { buffer = bufnr })
---     end,
---     }
--- }
+-- }}}
 
 lspconfig.clangd.setup { -- install clang somehow?
     on_attach = on_attach,
@@ -937,10 +998,9 @@ lspconfig.clangd.setup { -- install clang somehow?
       return lspconfig.util.root_pattern("compile_flags.txt")(fname) or "."
     end
 }
+-- }}}
 
-for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
-      vim.api.nvim_set_hl(0, group, {})
-end
+
 EOF
 " }}}
 "

@@ -2,22 +2,22 @@
 if exists("g:dont_overwrite_build_commands")
     " asdfg
 else
-    command! Build :Make! cargo run
+    command! Build :Make! cargo build
     command! Test :Make! cargo test --workspace
     command! Check :Make! cargo fmt && cargo clippy
 endif
 
-function! FindBuildFile()
-    let m = FindInParent(expand("%"), "Cargo.toml")
-    if m != ""
-      return m
-    endif
-    return "Cargo.toml"
+function! FindBuildFile(bang)
+    if a:bang != '!'
+        return FindInParent(expand("%"), "Cargo.toml")
+    else
+        return "Cargo.toml"
+    fi
 endfunction
 
-abbreviate <buffer> tmod #[cfg(test)]<cr>mod test {<cr>use super::*;<cr>#[test]<cr> fn test () {<cr>todo!();<cr>}<cr>}<up><up><end>
-abbreviate <buffer> ass assert!();<Left><Left>
-abbreviate <buffer> aeq assert_eq!(,);<Left><Left><Left>
+iabbrev <buffer> tmod #[cfg(test)]<cr>mod test {<cr>use super::*;<cr>#[test]<cr> fn test () {<cr>todo!();<cr>}<cr>}<up><up><end>
+iabbrev <buffer> ass assert!();<Left><Left>
+iabbrev <buffer> aeq assert_eq!(,);<Left><Left><Left>
 
 setl efm+=%E%.%#panicked\ at\ %f:%l:%c:
 setl efm+=%Z%m

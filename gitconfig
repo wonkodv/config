@@ -7,18 +7,22 @@
 	tool = nvimmerge
 [difftool "nvimdiff"]
 	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
+    #cmd = nvim  -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "nvimmerge"]
     cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
+    #cmd = nvim  -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd 4W | wincmd J | wincmd = | :silent /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
 [alias]
 	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
-	cleanorig = !find -type f -name \"*.orig\" -delete
-	l = log --graph
+    cleanmerge = "!f(){ git clean -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; git rm -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; }; f&>/dev/null"
+	ll = log --graph --first-parent
+    l= log --graph --first-parent --oneline
 	ld = log --graph --cc
-	desc = describe --tags --always --dirty
 	su = submodule update --init --recursive
 	pushf = push --force-with-lease
-	wip = commit -a --no-verify -m 'WIP'
-	ammend = commit --amend
+	puf   = push --force-with-lease
+	wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
+    unwip = "!f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
+    reset1 = reset HEAD~1
 [advice]
 	detachedHead = false
 [core]
@@ -38,3 +42,8 @@
 	format = ssh
 [init]
 	defaultBranch = dev
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

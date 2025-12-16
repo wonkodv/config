@@ -1,10 +1,5 @@
-Wonko's Home Directory
+# Config Files and scripts
 
-configure bash, git, nvim, nix and install some packages
+Config files, to be used by symlinking
 
-## Install
-
-```bash
-git clone https://github.com/wonkodv/werkzeugkasten ~/code/config
-~/code/config/install.sh
-```
+For bash files, intermediate scripts are created that source all files from `./bashrc.d/` and `./bash_profile.d/` respectively.

@@ -1,1 +1,3 @@
-setlocal equalprg=nixfmt
+"setlocal equalprg=nixfmt
+setlocal shiftwidth=2
+setlocal tabstop=2

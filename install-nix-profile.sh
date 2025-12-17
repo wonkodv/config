@@ -18,8 +18,8 @@ fi
 # avoid incompatibillities if `nix` is older or newer. after profile install, we
 # should be good as the profile comes early in PATH
 if nix run ".#nix" profile list | grep $PWD >/dev/null; then
-    # best intrface out there !!
-    nix run .#nix -- profile upgrade "$(nix run .#nix -- profile list --json | jq -r ".elements | to_entries | .[] | select( .value.originalUrl == \"git+file://$PWD\") | .key ")"
+    # best interface out there !!
+    nix run ".#nix" -- profile upgrade "$(nix run .#nix -- profile list --json | jq -r ".elements | to_entries | .[] | select( .value.originalUrl == \"git+file://$PWD\") | .key ")"
 else
     if [ -z "$1" ]; then
         echo "specify which profile package to install (dev, desktop, ...)"

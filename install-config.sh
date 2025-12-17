@@ -36,3 +36,5 @@ done
 
 git config user.email wonko@hanstool.org
 git config user.name wonko
+
+nix registry add config $PWD

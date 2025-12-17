@@ -17,15 +17,15 @@ function generate() {
             done
         }  > generated/$1
     fi
-    ln -i $PWD/generated/$1 ~/.$1
+    ln -i $PWD/generated/$1 ~/.$1                   || true
 }
 
 generate bashrc
 generate bash_profile
-ln -i -s $PWD/gitconfig     ~/.gitconfig
-ln -i -s $PWD/nvim          ~/.config/
-ln -i -s $PWD/kitty         ~/.config/
-ln -i -s $PWD/nix.conf      ~/.config/nix/nix.conf
+ln -i -s $PWD/gitconfig     ~/.gitconfig            || true
+ln -i -s $PWD/nvim          ~/.config/              || true
+ln -i -s $PWD/kitty         ~/.config/              || true
+ln -i -s $PWD/nix.conf      ~/.config/nix/nix.conf  || true
 touch ~/.bashrc_local
 touch ~/.bash_profile_local
 [ -d ~/code/bashjump ] || git clone https://github.com/wonkodv/bashjump ~/code/bashjump

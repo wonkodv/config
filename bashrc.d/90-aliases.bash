@@ -20,6 +20,7 @@ alias rsync='rsync --progress'
 alias shred='shred -uz'
 alias sudo='sudo '
 alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
+alias vidir='vidir --safe'
 
 function run() {
     local prog=$1

@@ -258,7 +258,7 @@ vim.opt.undoreload = 1000
 vim.opt.updatetime = 300
 vim.opt.viminfo = "'200,<50,s10,h,rA:,rB:,h,"
 vim.opt.virtualedit = 'all'
-vim.opt.wildignore = '**__pycache__**,result/'
+vim.opt.wildignore = '**__pycache__**,./target/*,./result/*'
 vim.opt.wildmenu = true
 vim.opt.wildmode = { 'longest:full', 'full' }
 vim.opt.winheight = 15
@@ -302,7 +302,23 @@ function Make(bang, cmdOrTargets)
                 vim.cmd('normal! G')
             else
                 print("🟥 Make Failed " .. return_code)
-                vim.cmd('cc')
+                -- Jump to highest priority valid finding (E > W > I > N > others)
+                local qflist = vim.fn.getqflist()
+                local priority = { E = 1, e = 1, W = 2, w = 2, I = 3, i = 3, N = 4, n = 4 }
+                local best = { prio = 999, idx = nil }
+
+                for i, item in ipairs(qflist) do
+                    if item.valid == 1 then
+                        local current = { prio = priority[item.type] or 5, idx = i }
+                        if current.prio < best.prio then
+                            best = current
+                        end
+                    end
+                end
+
+                if best.idx then
+                    vim.cmd('cc ' .. best.idx)
+                end
             end
 
             vim.cmd('wincmd w')
@@ -833,7 +849,11 @@ map('v', '<leader>dp', ':diffput<CR>')
 map('n', '<leader>du', ':diffupdate<CR>')
 map('n', '<leader>dt', ':diffthis<CR>')
 map('n', '<leader>e', 'O<c-a> = <Esc>p')
-map('n', '<space>f', '<cmd>update<cr><cmd>silent ! $NIX_FMT %<CR>')
+map('n', '<space>f', function()
+    vim.cmd('update')
+    local fmt_cmd = vim.env.NIX_FMT or 'nix fmt'
+    vim.cmd('! ' .. fmt_cmd .. ' %')
+end)
 map('n', '<leader>G', '<cmd>tab Git<CR>')
 map('n', 'gz', ':ZemEdit !<C-R><C-W><CR>zz')
 map('n', 'gf', 'gF')
@@ -843,8 +863,8 @@ map('n', '<leader>i', ':Import<CR>')
 map('o', 'i*', ':<C-U>call TextObjComment(1)<CR>')
 map('v', 'i*', '<ESC>:<C-U>call TextObjComment(1)<CR>')
 map('n', '<leader>l', function() vim.fn.setreg('+', GetFilenameAndLine()) end)
-map('n', '<leader>m', ':exe \'edit \'.FindBuildFile("")<CR>')
-map('n', '<leader>M', ':exe \'edit \'.FindBuildFile("!")<CR>')
+map('n', '<leader>m', function() vim.cmd('edit ' .. FindBuildFile('')) end)
+map('n', '<leader>M', function() vim.cmd('edit ' .. FindBuildFile('!')) end)
 map('n', '<leader>n', ':bn<CR>')
 map('n', '<leader>N', ':bp<CR>')
 map('n', 'Q', '@q')
@@ -854,12 +874,24 @@ map('v', '<leader>r,',
 map('v', '<leader>r=',
     ':<C-U>let old_reg=getreg(\'"\')<Bar>let old_regtype=getregtype(\'"\')<CR>gv""s<C-R>=join(reverse(split(@",\'\\s*=\\s*\')),\' = \')<CR><ESC>:call setreg(\'"\', old_reg, old_regtype)<CR>')
 map('n', '<leader>R', ':Rename <C-R>=expand("%")<CR>')
--- TODO: fix map('v', '<leader>s', '""y:%s/<C-R>=substitute(escape(@", \'?.\\*$^~[/\'), \'\\_s\\+\', \'\\\\\_s\\\\+\', \'g\')<CR>/<C-R>=substitute(escape(@", \'?.\\*$^~[/\'), \'\\_s\\+\', \'\\\\\_s\\\\+\', \'g\')<CR>/gc<left><left><left>')
--- TODO: fix map('n', '<leader>s', '""yiw:%s/\\<<C-R>=substitute(escape(@", \'?.\\*$^~[/\'), \'\\_s\\+\', \'\\\\\_s\\\\+\', \'g\')<CR>\\>/<C-R>=substitute(escape(@", \'?.\\*$^~[/\'), \'\\_s\\+\', \'\\\\\_s\\\\+\', \'g\')<CR>/gc<left><left><left>')
+map('v', '<leader>s', function()
+    vim.cmd('normal! ""y')
+    local text = vim.fn.getreg('"')
+    text = vim.fn.escape(text, '?.\\*$^~[/')
+    text = vim.fn.substitute(text, '\\_s\\+', '\\\\_s\\\\+', 'g')
+    vim.fn.feedkeys(':%s/' .. text .. '/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
+end)
+map('n', '<leader>s', function()
+    vim.cmd('normal! ""yiw')
+    local text = vim.fn.getreg('"')
+    text = vim.fn.escape(text, '?.\\*$^~[/')
+    text = vim.fn.substitute(text, '\\_s\\+', '\\\\_s\\\\+', 'g')
+    vim.fn.feedkeys(':%s/\\<' .. text .. '\\>/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
+end)
 map({ 'n', 'v' }, '<leader>S', ':%s/[ \\r\\t]\\+$//e<CR>')
 map('n', '<leader>T', TerminalOpen)
 map('n', '<leader>t', ':tabnew<CR>:set buftype=nofile<CR>')
-map('n', '<leader>v', '<cmd>grep "\\b<C-R><C-W>\\b"')
+map('n', '<leader>v', ':grep "\\b<C-R><C-W>\\b"<CR>')
 map('n', 'Z', ':Zem<CR>')
 map('n', 'z0', ':set foldlevel=99<CR>')
 map('n', 'z1', ':set foldlevel=0<CR>')
@@ -933,6 +965,8 @@ vim.cmd('cabbr <expr> %P expand(\'%:p\')')
 vim.cmd('cabbr <expr> %R expand(\'%:r\')')
 vim.cmd('cabbr <expr> %T expand(\'%:t\')')
 
+vim.cmd('iabbrev TODO: TODO(mr):')
+
 -- }}}
 
 -- LSP {{{
@@ -971,6 +1005,17 @@ else
 end
 
 vim.lsp.config('rust_analyzer', {
+    -- Disable snippet completions by telling rust-analyzer the client doesn't support them.
+    -- This prevents completions like "fn_name(${1:arg})" and instead shows "fn_name"
+    capabilities = {
+        textDocument = {
+            completion = {
+                completionItem = {
+                    snippetSupport = false
+                }
+            }
+        }
+    },
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -990,10 +1035,13 @@ vim.lsp.config('rust_analyzer', {
             },
             completion = {
                 postfix = {
-                    enabled = true,
+                    enabled = false,
                 },
                 privateEditable = {
                     enabled = true,
+                },
+                callable = {
+                    snippets = "none",
                 },
             },
             hover = {

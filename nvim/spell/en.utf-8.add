@@ -38,3 +38,5 @@ hypervisor
 Composable
 unstaged
 linter
+deserialize
+config

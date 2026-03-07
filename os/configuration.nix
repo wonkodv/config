@@ -33,6 +33,7 @@
             ];
             trusted-users = [ "root" "mr" ];
             allowed-users = ["*"];
+            secret-key-files = [ "/etc/nix/cache-priv-key.pem" ];
         };
     };
 

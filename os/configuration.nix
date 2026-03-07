@@ -157,7 +157,6 @@
             "scanner"
             "lp"
             "dialout"
-            "nixbld"
         ];
         hashedPassword = "$y$j9T$AjsEFU2u5ZJwewZMKCdfV0$lueB4RwUlC0TrO30RYuh9v5e7Cn0Zcf4LVGoFp6GzO6";
     };

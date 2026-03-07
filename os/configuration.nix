@@ -38,8 +38,11 @@
 
     hardware.graphics.enable = true;
 
-    networking.hostName = "deepthought"; # Define your hostname.
-    networking.networkmanager.enable = true;
+    networking = {
+      hostName = "deepthought"; # Define your hostname.
+      networkmanager.enable = true;
+      firewall.allowedTCPPorts = [22];
+    };
 
     time.timeZone = "Europe/Berlin";
 

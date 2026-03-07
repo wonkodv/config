@@ -1,5 +1,4 @@
-[user]
-    signingkey = ~/.ssh/id_ed25519.pub
+# keep [user] in ~/.config/git/config
 [diff]
     tool = nvimdiff
     submodule = log
@@ -40,8 +39,10 @@
     pushInsteadOf = https://github.com
 [gpg]
     format = ssh
+[commit]
+    gpgsign = true
 [init]
-    defaultBranch = dev
+    defaultBranch = develop
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f

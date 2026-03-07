@@ -13,19 +13,19 @@ function generate() {
             echo " # vim:ft=bash:"
             echo "### Generated"
             for f in $1.d/*.bash; do
-                echo "source $PWD/$f";
+                echo "source $PWD/$f"
             done
-        }  > generated/$1
+        } >generated/$1
     fi
-    ln -i $PWD/generated/$1 ~/.$1                   || true
+    ln -i $PWD/generated/$1 ~/.$1 || true
 }
 
 generate bashrc
 generate bash_profile
-ln -i -s $PWD/gitconfig     ~/.gitconfig            || true
-ln -i -s $PWD/nvim          ~/.config/              || true
-ln -i -s $PWD/kitty         ~/.config/              || true
-ln -i -s $PWD/nix.conf      ~/.config/nix/nix.conf  || true
+ln -i -s $PWD/gitconfig ~/.gitconfig || true
+ln -i -s $PWD/nvim ~/.config/ || true
+ln -i -s $PWD/kitty ~/.config/ || true
+ln -i -s $PWD/nix.conf ~/.config/nix/nix.conf || true
 touch ~/.bashrc_local
 touch ~/.bash_profile_local
 [ -d ~/code/bashjump ] || git clone https://github.com/wonkodv/bashjump ~/code/bashjump

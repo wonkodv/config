@@ -21,9 +21,17 @@
             allowUnfree = true;
         };
     };
-    nix.registry = {
-        nixpkgs.flake = inputs.nixpkgs;
-        #nixpkgsStable.flake = inputs.nixpkgsStable;
+    nix = {
+        registry = {
+            nixpkgs.flake = inputs.nixpkgs;
+            #nixpkgsStable.flake = inputs.nixpkgsStable;
+        };
+        settings = {
+            experimental-features = [
+                "nix-command"
+                "flakes"
+            ];
+        };
     };
 
     hardware.graphics.enable = true;
@@ -170,7 +178,7 @@
         ];
     };
 
-    environment.systemPackages = 
+    environment.systemPackages =
         with pkgs;
         [
             efibootmgr
@@ -181,8 +189,7 @@
             jre
             neovim
         ]
-         ++   (all-deps pkgs);
-
+        ++ (all-deps pkgs);
 
     nixpkgs.config.packageOverrides = pkgs: {
         xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
@@ -215,7 +222,6 @@
     programs.steam = {
         enable = true;
     };
-
 
     # List services that you want to enable:
     systemd.services.numLockOnTty = {
@@ -255,11 +261,6 @@
         login.u2fAuth = true;
         sudo.u2fAuth = true;
     };
-
-    nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
-    ];
 
     fonts.packages = with pkgs; [
         fira-code

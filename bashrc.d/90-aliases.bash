@@ -46,7 +46,6 @@ function _status() {
     local red="\e[1;31m"
     local clear="\e[0m"
 
-
     if [ -r /sys/class/power_supply/BAT0/ ]; then
         echo -en "${bold}BATTERY${clear} "
         full=$(cat /sys/class/power_supply/BAT0/energy_full)
@@ -56,23 +55,19 @@ function _status() {
         echo
     fi
 
-
-    if [[ $(jobs |wc -l ) -gt 0 ]]
-    then
+    if [[ $(jobs | wc -l) -gt 0 ]]; then
         echo -e "${bold}Jobs${clear}"
         jobs
         echo
     fi
 
-    if [ -n "$VIRTUAL_ENV" ]
-    then
+    if [ -n "$VIRTUAL_ENV" ]; then
         echo -en "${bold}VENV${clear}    "
         echo "$VIRTUAL_ENV"
         echo
     fi
 
-    if [ -n "$SSH_CLIENT" ]
-    then
+    if [ -n "$SSH_CLIENT" ]; then
         echo -en "${bold}SSH${clear}   "
         echo "$SSH_CONNECTION"
         echo

@@ -63,43 +63,6 @@ setlocal errorformat+=%f:%l:%c\%m
 setlocal errorformat+=%f:%l:\ %m
 let &errorformat.=",%f:%l: "
 
-python3 << EOF
-def Inspect(x):
-    import inspect
-    import vim
-    import importlib
-    o = __builtins__
-    parts = []
-
-    for part in x.split("."):
-        parts.append(part)
-        try:
-            o = getattr(o,part)
-        except AttributeError as ae:
-            try:
-                o = importlib.import_module(".".join(parts))
-            except ImportError:
-                raise ae from None
-
-    o = inspect.unwrap(o)
-    f = inspect.getsourcefile(o)
-    p = vim.command("edit "+f)
-    try:
-        _, l = inspect.getsourcelines(o)
-        vim.command("normal {}G".format(l))
-    except TypeError:
-        l = 0
-
-RELATED_FILE_RES = (
-    # test/bar/test_foo.py => bar/foo.py
-    ( r"^test/(.*/)test_(\w*\.py)",   (r"\1\2",)),
-    # bar/test_foo.py  => bar/foo.py
-    ( r"\btest_(\w*\.py)",            (r"\1",)),
-    # bar/foo.py => bar/test_foo.py test/bar/test_foo.py
-    ( r"^(.*/)(\w*\.py)",             (r"\1test_\2", r"test/\1test_\2",)),
-)
-EOF
-
 function! QFErrorResolve()
     cclose
     let t = execute("cc")

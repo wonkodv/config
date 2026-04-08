@@ -119,6 +119,24 @@ vim.api.nvim_create_autocmd('TermOpen', {
     end
 })
 
+vim.api.nvim_create_autocmd('QuitPre', {
+    group = augroup,
+    callback = function()
+        local term_buf = nil
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.bo[buf].buftype == 'terminal' and vim.api.nvim_buf_is_loaded(buf) then
+                term_buf = buf
+                break
+            end
+        end
+
+        if term_buf and #vim.api.nvim_list_wins() <= 1 then
+            vim.cmd('buffer ' .. term_buf)
+            vim.cmd('echoerr "Terminal buffers are still open!"')
+        end
+    end
+})
+
 vim.api.nvim_create_autocmd('FileType', {
     group = augroup,
     pattern = 'qf',

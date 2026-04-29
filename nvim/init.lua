@@ -753,8 +753,11 @@ function LspCommands()
         function(opts) vim.lsp.buf.document_symbol(opts.args) end, { nargs = '?' })
     vim.api.nvim_buf_create_user_command(0, 'LspListWorkspaceSymbols',
         function(opts) vim.lsp.buf.workspace_symbol(opts.args) end, { nargs = '?' })
-    vim.api.nvim_buf_create_user_command(0, 'LspNextDiagnostic', function() vim.diagnostic.jump({count=1,float=true}) end, {})
-    vim.api.nvim_buf_create_user_command(0, 'LspPrevDiagnostic', function() vim.diagnostic.jump({count=-1,float=true}) end, {})
+    vim.api.nvim_buf_create_user_command(0, 'LspNextDiagnostic',
+        function() vim.diagnostic.jump({ count = 1, float = true }) end,
+        {})
+    vim.api.nvim_buf_create_user_command(0, 'LspPrevDiagnostic',
+        function() vim.diagnostic.jump({ count = -1, float = true }) end, {})
     vim.api.nvim_buf_create_user_command(0, 'LspQfList', function() vim.diagnostic.setqflist() end, {})
     vim.api.nvim_buf_create_user_command(0, 'LspReferences', function() vim.lsp.buf.references() end, {})
     vim.api.nvim_buf_create_user_command(0, 'LspRename', function() vim.lsp.buf.rename() end, {})
@@ -879,14 +882,16 @@ map('v', '<leader>s', function()
     local text = vim.fn.getreg('"')
     text = vim.fn.escape(text, '?.\\*$^~[/')
     text = vim.fn.substitute(text, '\\_s\\+', '\\\\_s\\\\+', 'g')
-    vim.fn.feedkeys(':%s/' .. text .. '/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
+    vim.fn.feedkeys(':%s/' ..
+        text .. '/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
 end)
 map('n', '<leader>s', function()
     vim.cmd('normal! ""yiw')
     local text = vim.fn.getreg('"')
     text = vim.fn.escape(text, '?.\\*$^~[/')
     text = vim.fn.substitute(text, '\\_s\\+', '\\\\_s\\\\+', 'g')
-    vim.fn.feedkeys(':%s/\\<' .. text .. '\\>/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
+    vim.fn.feedkeys(':%s/\\<' ..
+        text .. '\\>/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
 end)
 map({ 'n', 'v' }, '<leader>S', ':%s/[ \\r\\t]\\+$//e<CR>')
 map('n', '<leader>T', TerminalOpen)
@@ -1018,20 +1023,12 @@ vim.lsp.config('rust_analyzer', {
     },
     settings = {
         ["rust-analyzer"] = {
-            imports = {
-                granularity = {
-                    group = "item",
-                },
-                group = {
-                    enable = true,
-                },
-            },
             cargo = {
                 allFeatures = true,
                 loadOutDirsFromCheck = true,
             },
-            rustc = {
-                source = "/Users/matthias.riegel/pro/rust/Cargo.toml",
+            check = {
+                command = clippy,
             },
             completion = {
                 postfix = {
@@ -1044,6 +1041,15 @@ vim.lsp.config('rust_analyzer', {
                     snippets = "none",
                 },
             },
+            diagnostics = {
+                disabled = {
+                    "unlinked-file",
+                    "inactive-code",
+                },
+            },
+            files = {
+                exclude = { ".direnv", "a", "b", },
+            },
             hover = {
                 actions = {
                     references = {
@@ -1051,14 +1057,16 @@ vim.lsp.config('rust_analyzer', {
                     },
                 },
             },
-            check = {
-                command = clippy,
-            },
-            diagnostics = {
-                disabled = {
-                    "unlinked-file",
-                    "inactive-code",
+            imports = {
+                granularity = {
+                    group = "item",
                 },
+                group = {
+                    enable = true,
+                },
+            },
+            rustc = {
+                source = vim.env.HOME .. "/pro/rust/Cargo.toml",
             },
         }
     }

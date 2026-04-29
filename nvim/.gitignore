@@ -4,3 +4,4 @@ autoload/plug.vim.old
 .index
 *.spl
 local.vim
+local.lua

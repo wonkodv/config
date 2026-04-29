@@ -34,5 +34,4 @@ PS1="$PS1"'\[\e[0;32m\]\w'
 PS1="$PS1"'\[\e[0;34m\] ; '
 
 
-
-#PS1="$PS1"'\n\[\e[30;49;8m\]: \[\e[0;34m\]; '
+readonly PS1 # a bit agressive, but meh

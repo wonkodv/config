@@ -5,7 +5,4 @@ if [ -n "$NVIM" ]; then
 else
     export EDITOR=nvim
     alias vim=nvim
-    function _prompt_marker {
-        true
-    }
 fi

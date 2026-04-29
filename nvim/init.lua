@@ -230,8 +230,6 @@ vim.opt.scrollback = 100000
 vim.opt.scrolloff = 3
 vim.opt.sidescrolloff = 3
 vim.opt.signcolumn = 'number'
-vim.opt.shellpipe = '2>&1|tee'
-vim.opt.shell = '/var/run/current-system/sw/bin/bash'
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 4
 vim.opt.shortmess = 'atIT'
@@ -1151,6 +1149,9 @@ vim.lsp.enable('lua_ls')
 -- Load local.vim if it exists
 if vim.fn.filereadable(vim.fn.expand('<sfile>:h') .. '/local.vim') == 1 then
     vim.cmd('source ' .. vim.fn.expand('<sfile>:h') .. '/local.vim')
+end
+if vim.fn.filereadable(vim.fn.expand('<sfile>:h') .. '/local.lua') == 1 then
+    vim.cmd('source ' .. vim.fn.expand('<sfile>:h') .. '/local.lua')
 end
 
 vim.opt.secure = true

@@ -86,7 +86,8 @@ function _status() {
     if git rev-parse &>/dev/null; then
         echo -e "${bold}GIT${clear}"
         git --no-pager -c color.status=always stash list
-        git --no-pager -c color.status=always log --graph --oneline origin/develop @{upstream} $(git merge-base origin/develop HEAD)^..HEAD
+        git --no-pager log --color=always --graph --oneline $(git merge-base origin/HEAD HEAD)^..HEAD  @{upstream} origin/HEAD -20 ||
+            git --no-pager log --color=always --graph --oneline HEAD -20
         git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M
         echo
     fi

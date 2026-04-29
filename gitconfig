@@ -1,49 +1,49 @@
 [user]
-	signingkey = ~/.ssh/id_ed25519.pub
+    signingkey = ~/.ssh/id_ed25519.pub
 [diff]
-	tool = nvimdiff
-	submodule = log
+    tool = nvimdiff
+    submodule = log
 [merge]
-	tool = nvimmerge
+    tool = nvimmerge
 [difftool "nvimdiff"]
-	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
-    #cmd = nvim  -d \"$LOCAL\" \"$REMOTE\"
+    cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "nvimmerge"]
     cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
-    #cmd = nvim  -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd 4W | wincmd J | wincmd = | :silent /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
 [alias]
-	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
     cleanmerge = "!f(){ git clean -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; git rm -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; }; f&>/dev/null"
-	ll = log --graph --first-parent
-    l= log --graph --first-parent --oneline
-	ld = log --graph --cc
-	su = submodule update --init --recursive
-	pushf = push --force-with-lease
-	puf   = push --force-with-lease
-	wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
-    unwip = "!f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
+    ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
+    l = log --graph --first-parent --oneline
+    ld = log --graph --cc
+    ll = log --graph --first-parent
+    new = "! git  fetch; git switch -d origin/HEAD; git switch -c "
+    puf   = push --force-with-lease
+    pushf = push --force-with-lease
     reset1 = reset HEAD~1
+    ri = "! git fetch; git rebase -i origin/HEAD"
+    su = submodule update --init --recursive
+    unwip = "! f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
+    wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
 [advice]
-	detachedHead = false
+    detachedHead = false
 [core]
-	autocrlf = input
+    autocrlf = input
 [push]
-	default=current
-	autoSetupRemote=true
+    default=current
+    autoSetupRemote=true
 [pull]
-	default=current
+    default=current
 [submodule]
-	recurse = false
+    recurse = false
 [status]
-	submodulesummary = 1
+    submodulesummary = 1
 [url "ssh://git@github.com"]
-	pushInsteadOf = https://github.com
+    pushInsteadOf = https://github.com
 [gpg]
-	format = ssh
+    format = ssh
 [init]
-	defaultBranch = dev
+    defaultBranch = dev
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true

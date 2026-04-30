@@ -86,8 +86,14 @@ function _status() {
     if git rev-parse &>/dev/null; then
         echo -e "${bold}GIT${clear}"
         git --no-pager -c color.status=always stash list
-        git --no-pager log --color=always --graph --oneline $(git merge-base origin/HEAD HEAD)^..HEAD  @{upstream} origin/HEAD -20 ||
-            git --no-pager log --color=always --graph --oneline HEAD -20
+
+        local refs= base= excl= r
+        for r in HEAD origin/HEAD '@{upstream}'; do
+            git rev-parse --verify --quiet "$r" >/dev/null 2>&1 && refs="$refs $r"
+        done
+        base=$(git merge-base --octopus $refs 2>/dev/null)
+        [ -n "$base" ] && excl="^$base^@"
+        git log --graph --oneline --decorate -n 20 $refs $excl "$@"
         git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M
         echo
     fi

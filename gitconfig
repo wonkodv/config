@@ -19,7 +19,7 @@
     puf   = push --force-with-lease
     pushf = push --force-with-lease
     reset1 = reset HEAD~1
-    ri = "! git fetch; git rebase -i origin/HEAD"
+    ri = "! git fetch origin HEAD; git rebase -i origin/HEAD"
     su = submodule update --init --recursive
     unwip = "! f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
     wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"

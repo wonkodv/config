@@ -1,6 +1,6 @@
 # _prompt_marker is defined by Editor
 #PS0='\e[m$(_prompt_marker)'
-PS0='\e[m'
+PS0='\[\e[m\]'
 # put command in title
 #PS0="$PS0"'\e]0;\u@\h:\w' # : $(history -a; tail -1 ~/.bash_history)\a' adds full history after each command, spamming bash_history, if there are multiple bashs open
 

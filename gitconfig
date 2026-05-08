@@ -15,7 +15,7 @@
     l = log --graph --first-parent --oneline
     ld = log --graph --cc
     ll = log --graph --first-parent
-    new = "! git  fetch; git switch -d origin/HEAD; git switch -c "
+    new = "! git  fetch origin HEAD; git switch -d origin/HEAD; git switch -c "
     puf   = push --force-with-lease
     pushf = push --force-with-lease
     reset1 = reset HEAD~1

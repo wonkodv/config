@@ -17,7 +17,7 @@ alias rm='rm -i'
 alias rsync='rsync --progress'
 alias shred='shred -uz'
 alias sudo='sudo '
-alias vidir='vidir --safe'
+alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
 
 alias clip='xclip -selection clipboard'
 alias clipo='xclip -selection clipboard -out'

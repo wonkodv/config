@@ -2,5 +2,9 @@
 # has in its environment
 
 if [[ -n $SSH_CLIENT && -z $DISPLAY ]]; then
-    export $(strings /proc/*/environ 2>/dev/null | grep '^DISPLAY\|^DBUS_SESSION' | sort -u | tail -2)
+    variables=$(strings /proc/*/environ 2>/dev/null | grep '^DISPLAY\|^DBUS_SESSION' | sort -u | tail -2)
+    if [ -n "$variables" ]; then
+        export $variables
+    fi
+    unset variables
 fi

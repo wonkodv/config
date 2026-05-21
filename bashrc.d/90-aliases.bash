@@ -1,6 +1,4 @@
-alias clip='xclip -selection clipboard'
-alias clipo='xclip -selection clipboard -out'
-alias clipi='xclip -selection clipboard -in'
+# better // safer overwrites
 alias cp='cp -i'
 alias crontab='crontab -i'
 alias dd='dd status=progress'
@@ -19,15 +17,13 @@ alias rm='rm -i'
 alias rsync='rsync --progress'
 alias shred='shred -uz'
 alias sudo='sudo '
-alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
 alias vidir='vidir --safe'
 
-function run() {
-    local prog=$1
-    shift
-    nix run "github:NixOS/nixpkgs/25.05#$prog" -- "$@"
-}
-
+alias clip='xclip -selection clipboard'
+alias clipo='xclip -selection clipboard -out'
+alias clipi='xclip -selection clipboard -in'
+alias clauder='claude --resume'
+alias geminir='gemini --resume'
 alias icat="kitty +kitten icat"
 alias bd="lsblk --output name,partlabel,label,mountpoints,fstype,size,fsavail,fsuse%,model,partuuid,uuid,pttype"
 alias l='ls --color=auto -lh --file-type --hyperlink=auto'
@@ -35,7 +31,6 @@ alias f='feh --draw-actions --auto-zoom --draw-filename --draw-tinted --fullscre
 alias :q='false'
 alias :wq='false'
 alias :e="nvr --remote-tab"
-
 alias camera_50_hz="cameractrls -d /dev/video2 -c power_line_frequency=50_hz"
 
 function git_id() {

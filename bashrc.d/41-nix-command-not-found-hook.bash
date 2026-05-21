@@ -15,7 +15,7 @@ _CNF_FILE=~/tmp/.command-not-found
 
 command_not_found_handle() {
     printf '%q ' "$@" > "$_CNF_FILE"
-    echo "bash: $1: command not found" >&2
+    echo "bash: $1: command not found, try 'argh'" >&2
     return 127
 }
 

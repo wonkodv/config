@@ -209,6 +209,7 @@ vim.opt.history = 100
 vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
+vim.opt.includeexpr = "substitute(v:fname,'^[ab]/','','')" -- allog `gf` on `a/PATH` in git diff
 vim.opt.indentkeys = '0{,0},0),0],!^F,o,O'
 vim.opt.langmenu = 'en'
 vim.opt.laststatus = 2
@@ -606,7 +607,10 @@ end
 
 function AutoChmod(fn)
     local ok, lines = pcall(vim.api.nvim_buf_get_lines, vim.fn.bufnr(fn), 0, 1, false)
-    if ok and lines and lines[1] and lines[1]:sub(1, 2) == "#!" then
+    -- matchin `#!/` to ignore rust attrs `#![attr]`
+    -- the only non-`/` paths would be python3 on windows where +x doesn't
+    -- matter
+    if ok and lines and lines[1] and lines[1]:sub(1, 3) == "#!/" then
         vim.fn.system({ "chmod", "+x", fn })
     end
 end

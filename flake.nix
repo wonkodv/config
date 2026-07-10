@@ -127,10 +127,11 @@
                 deps = depsel pkgs;
             in
             {
-                packages = {
-                    legacyPackages = pkgs;
+                legacyPackages = pkgs;
 
-                    inherit fmt;
+                inherit fmt;
+
+                packages = {
 
                     dev = pkgs.symlinkJoin {
                         name = "Wonko's Develop Tools";
@@ -170,6 +171,9 @@
                                     "clippy"
                                 ];
                             })
+                            pkgs.cargo-nextest
+                            pkgs.cargo-expand
+                            pkgs.cargo-insta
                         ];
                     };
 
@@ -181,6 +185,9 @@
                                     "clippy"
                                 ];
                             })
+                            pkgs.cargo-nextest
+                            pkgs.cargo-expand
+                            pkgs.cargo-insta
                         ];
                     };
 

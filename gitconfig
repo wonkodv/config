@@ -1,50 +1,47 @@
+# vim:noexpandtab:nolist:
 # keep [user] in ~/.config/git/config
 [diff]
-    tool = nvimdiff
-    submodule = log
+	tool = nvimdiff
+	submodule = log
 [merge]
-    tool = nvimmerge
+	tool = nvimmerge
 [difftool "nvimdiff"]
-    cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
+	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "nvimmerge"]
-    cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
+	cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
 [alias]
-    cleanmerge = "!f(){ git clean -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; git rm -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; }; f&>/dev/null"
-    ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
-    l = log --graph --first-parent --oneline
-    ld = log --graph --cc
-    ll = log --graph --first-parent
-    new = "! git  fetch origin HEAD; git switch -d origin/HEAD; git switch -c "
-    puf   = push --force-with-lease
-    pushf = push --force-with-lease
-    reset1 = reset HEAD~1
-    ri = "! git fetch origin HEAD; git rebase -i origin/HEAD"
-    su = submodule update --init --recursive
-    unwip = "! f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
-    wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
+	cleanmerge = "!f(){ git clean -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; git rm -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; }; f&>/dev/null"
+	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
+	l = log --graph --first-parent --oneline
+	ld = log --graph --cc
+	ll = log --graph --first-parent
+	new = "! git  fetch origin HEAD && git switch -d origin/HEAD && git switch -c "
+	puf   = push --force-with-lease
+	pushf = push --force-with-lease
+	reset1 = reset HEAD~1
+	ri = "! git fetch origin HEAD && git rebase -i origin/HEAD"
+	su = submodule update --init --recursive
+	sup = ! git fetch && git switch -d origin/HEAD
+	unwip = "! f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
+	wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
 [advice]
-    detachedHead = false
+	detachedHead = false
 [core]
-    autocrlf = input
+	autocrlf = input
 [push]
-    default=current
-    autoSetupRemote=true
+	default=current
+	autoSetupRemote=true
 [pull]
-    default=current
+	default=current
 [submodule]
-    recurse = false
+	recurse = false
 [status]
-    submodulesummary = 1
+	submodulesummary = 1
 [url "ssh://git@github.com"]
-    pushInsteadOf = https://github.com
+	pushInsteadOf = https://github.com
 [gpg]
     format = ssh
 [commit]
     gpgsign = true
 [init]
     defaultBranch = develop
-[filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true

@@ -32,7 +32,7 @@ vim.g.loaded_python_provider = 1
 -- }}}
 
 -- ZEM {{{
-vim.g.zem_db = '.index'
+vim.g.zem_db = '.zem.sqlite'
 vim.g.zem_height = 30
 vim.g.zem_sources = {
     { 'files', {} },
@@ -1085,9 +1085,6 @@ vim.lsp.config('rust_analyzer', {
                     enable = true,
                 },
             },
-            rustc = {
-                source = vim.env.HOME .. "/pro/rust/Cargo.toml",
-            },
         }
     }
 })
@@ -1099,6 +1096,13 @@ vim.lsp.config('nil_ls', {
     settings = {
         ["nil"] = {
             formatting = { "nixfmt" },
+            nix = {
+                flake = {
+                    -- don't `nix flake archive` inputs on open; it's slow and annoying
+                    autoArchive = false,
+                    autoEvalInputs = false,
+                },
+            },
         },
     },
 })
@@ -1164,6 +1168,19 @@ vim.lsp.config('lua_ls', {
     },
 })
 vim.lsp.enable('lua_ls')
+-- }}}
+
+-- {{{ TOML
+vim.lsp.config('taplo', {
+    settings = {
+        taplo = {
+            schema = {
+                enabled = true,
+            },
+        },
+    },
+})
+vim.lsp.enable('taplo')
 -- }}}
 
 -- }}} LSP

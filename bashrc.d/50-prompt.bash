@@ -1,6 +1,6 @@
 # _prompt_marker is defined by Editor
 #PS0='\e[m$(_prompt_marker)'
-PS0='\[\e[m\]'
+PS0='\e[m'
 # put command in title
 #PS0="$PS0"'\e]0;\u@\h:\w' # : $(history -a; tail -1 ~/.bash_history)\a' adds full history after each command, spamming bash_history, if there are multiple bashs open
 
@@ -8,7 +8,7 @@ PS0='\[\e[m\]'
 PS1=
 
 # colored returncode
-PS1+='$(rc=$?; if [ $rc -ne 0 ]; then printf "\[\e[0;31m\]=> %d\[\e[m\]\n\n" "$rc"; fi)' # $() strips one \n
+PS1+='$(rc=$?; if [ $rc -ne 0 ]; then printf "\[\e[0;31m\]=> %d\[\e[m\]\n\[\]" "$rc"; fi)' # trailing \[\] blocks $() newline-strip so no orphan \r remains
 
 # set title
 PS1+='\[\e]0;\u@\h:\w\a\]'

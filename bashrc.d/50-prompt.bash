@@ -14,10 +14,10 @@ PS1+='$(rc=$?; if [ $rc -ne 0 ]; then printf "\[\e[0;31m\]=> %d\[\e[m\]\n\[\]" "
 PS1+='\[\e]0;\u@\h:\w\a\]'
 
 # start
-PS1+='\[\e[30;49;8m\]: '
+PS1+='\[\e[30;49;8m\]: \[\e[0m\]'
 
 # NIX
-PS1+='${IN_NIX_SHELL:+\[\e[0;36m\]NIX }'
+PS1+='$( if [ -n "$IN_NIX_SHELL" ] ; then printf "\[\e[34m\]NIX "; else [ -f flake.nix ] && printf "\[\e[31m\]NIX? "; fi)'
 
 # Git branch
 PS1+='$(b=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null) && echo "\[\e[0;35m\]$b ")'

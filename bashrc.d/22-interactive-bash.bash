@@ -2,3 +2,4 @@ if [[ -z "$INTERACTIVE_BASH" && "$(readlink -f "$BASH")" == *interactive* ]]; th
 	export INTERACTIVE_BASH="$BASH"
 fi
 PROMPT_COMMAND='export SHELL="$INTERACTIVE_BASH"'
+alias bash=$INTERACTIVE_BASH

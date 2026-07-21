@@ -1,5 +1,11 @@
 # vim:noexpandtab:nolist:
-# keep [user] in ~/.config/git/config
+# keep in ~/.config/git/config
+#[user]
+#[gpg]
+#    format = ssh
+#[commit]
+#    gpgsign = true
+
 [diff]
 	tool = nvimdiff
 	submodule = log
@@ -9,13 +15,17 @@
 	cmd = nvr -s -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "nvimmerge"]
 	cmd = nvr -s -d \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\" -c 'wincmd J | wincmd = | /\\([<=>]\\)\\1\\1\\1\\1\\1\\1'
+[mergetool]
+	keepBackup = false
+	keepTemporaries = false
 [alias]
-	cleanmerge = "!f(){ git clean -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; git rm -f '*.orig' '*_BACKUP_*' '*_BASE_*' '*_LOCAL_*'  '*_REMOTE_*' ; }; f&>/dev/null"
+	cleanmerge = "!f(){git clean -fdx -- '*.orig' '*_BASE_*' '*_LOCAL_*' '*_REMOTE_*'; }; f&>/dev/null"
 	ignore = "!f(){ while [ -n \"$1\" ]; do echo \"$1\" >> $(git rev-parse --git-dir)/info/exclude; shift; done; }; f"
 	l = log --graph --first-parent --oneline
 	ld = log --graph --cc
 	ll = log --graph --first-parent
 	new = "! git  fetch origin HEAD && git switch -d origin/HEAD && git switch -c "
+	poke = "! git commit -m 'poke ci' --allow-empty && git push"
 	puf   = push --force-with-lease
 	pushf = push --force-with-lease
 	reset1 = reset HEAD~1
@@ -39,9 +49,5 @@
 	submodulesummary = 1
 [url "ssh://git@github.com"]
 	pushInsteadOf = https://github.com
-[gpg]
-    format = ssh
-[commit]
-    gpgsign = true
 [init]
     defaultBranch = develop

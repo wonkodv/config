@@ -8,7 +8,7 @@ if not vim.g.dont_overwrite_build_commands then
     end, {})
 
     vim.api.nvim_buf_create_user_command(0, 'Check', function()
-        Make('!', 'cargo fmt && cargo clippy')
+        Make('!', 'cargo fmt && cargo clippy --all-targets --all-features')
     end, {})
 end
 
@@ -22,3 +22,4 @@ end
 
 
 -- vim.opt_local.errorformat:append('%.%#panicked\\ at\\ %f:%l:%c:')
+-- vim.opt_local.errorformat:append('%f:%l: %m')

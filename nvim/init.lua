@@ -827,7 +827,7 @@ map('n', '<C-W>a', ':cclose<CR>')
 map('t', '<Esc>', '<C-\\><C-n>')
 map('n', '<F2>', ':cprev<CR><F3>')
 map('n', '<leader><F2>', ':cpf<CR><F3>')
-map('n', '<F3>', 'zz<cmd>let b:cc=execute(\':cc\')<CR><cmd>cc<CR>zz')
+map('n', '<F3>', 'zz<cmd>let b:cc=execute(\':cc\')<CR><cmd>cc<CR><cmd>e<cr>zz')
 map('n', '<leader><F3>', '<cmd>cbuffer<CR><F3>')
 map('n', '<F4>', ':cnext<CR><F3>')
 map('n', '<leader><F4>', ':cnf<CR><F3>')
@@ -1132,19 +1132,19 @@ vim.lsp.enable('pylsp')
 -- }}}
 
 -- {{{ Clangd
-vim.lsp.config('clangd', {
-    cmd = {
-        "clangd",
-        "--clang-tidy",
-        "--cross-file-rename",
-        "--header-insertion=iwyu",
-        "--log=info",
-    },
-    root_dir = function(fname)
-        return vim.fs.root(fname, { "compile_flags.txt" }) or "."
-    end
-})
-vim.lsp.enable('clangd')
+-- vim.lsp.config('clangd', {
+--     cmd = {
+--         "clangd",
+--         "--clang-tidy",
+--         "--cross-file-rename",
+--         "--header-insertion=iwyu",
+--         "--log=info",
+--     },
+--     root_dir = function(fname)
+--         return vim.fs.root(fname, { "compile_flags.txt" }) or "."
+--     end
+-- })
+-- vim.lsp.enable('clangd')
 -- }}}
 
 -- {{{ Lua

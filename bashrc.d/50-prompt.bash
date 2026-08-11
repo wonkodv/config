@@ -34,4 +34,3 @@ PS1+='\[\e[0;32m\]\w'
 PS1+='\[\e[0;34m\] ; '
 
 
-readonly PS1 # a bit agressive, but meh

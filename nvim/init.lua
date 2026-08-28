@@ -269,6 +269,7 @@ vim.opt.textwidth = 80
 vim.opt.timeout = false
 vim.opt.timeoutlen = 2000
 vim.opt.title = true
+vim.opt.titlestring = '%{&buftype ==# "terminal" ? get(b:, "term_title", "") : $USER . "@" . hostname() . ":" . fnamemodify(getcwd(), ":~")}'
 vim.opt.undofile = true
 vim.opt.undolevels = 1000
 vim.opt.undoreload = 1000

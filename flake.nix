@@ -84,6 +84,7 @@
                         mpc
                         mpd
                         mpd-mpris
+                        opencode
                         numlockx
                         pcsc-tools
                         pinentry-gnome3

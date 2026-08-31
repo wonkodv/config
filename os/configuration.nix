@@ -258,6 +258,9 @@
         };
     };
 
+
+    services.ollama.enable = true;
+
     services.gnome.gnome-keyring.enable = true;
 
     services.openssh.enable = true;

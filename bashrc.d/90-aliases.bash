@@ -1,37 +1,36 @@
-# better // safer overwrites
+alias :e="nvr --remote-tab"
+alias :q='false'
+alias :wq='false'
+alias bd="lsblk --output name,partlabel,label,mountpoints,fstype,size,fsavail,fsuse%,model,partuuid,uuid,pttype"
+alias caffeinate='caffeinate '
+alias camera_50_hz="cameractrls -d /dev/video2 -c power_line_frequency=50_hz"
+alias clauder='claude --resume'
+alias clip='xclip -selection clipboard'
+alias clipi='xclip -selection clipboard -in'
+alias clipo='xclip -selection clipboard -out'
 alias cp='cp -i'
 alias crontab='crontab -i'
 alias dd='dd status=progress'
 alias df='df -h'
 alias diff='git diff --no-index'
 alias du='du -c -h'
+alias f='feh --draw-actions --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
 alias free='free -h'
+alias geminir='gemini --resume'
 alias grep='grep --color=auto'
+alias icat="kitty +kitten icat"
 alias ip="ip --color=auto"
 alias ipython='ipython --no-confirm-exit'
+alias l='ls --color=auto -lh --file-type --hyperlink=auto'
 alias ln='ln -i'
 alias mkdir='mkdir -p -v'
 alias mv='mv -i'
 alias nano='nano -w'
+alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
 alias rm='rm -i'
 alias rsync='rsync --progress'
 alias shred='shred -uz'
 alias sudo='sudo '
-alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
-
-alias clip='xclip -selection clipboard'
-alias clipo='xclip -selection clipboard -out'
-alias clipi='xclip -selection clipboard -in'
-alias clauder='claude --resume'
-alias geminir='gemini --resume'
-alias icat="kitty +kitten icat"
-alias bd="lsblk --output name,partlabel,label,mountpoints,fstype,size,fsavail,fsuse%,model,partuuid,uuid,pttype"
-alias l='ls --color=auto -lh --file-type --hyperlink=auto'
-alias f='feh --draw-actions --auto-zoom --draw-filename --draw-tinted --fullscreen --action ";echo %F"'
-alias :q='false'
-alias :wq='false'
-alias :e="nvr --remote-tab"
-alias camera_50_hz="cameractrls -d /dev/video2 -c power_line_frequency=50_hz"
 
 function git_id() {
     read -e -p "Email: " -i wonko@hanstool.org email

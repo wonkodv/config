@@ -34,6 +34,7 @@
 	sup = ! git fetch && git switch -d origin/HEAD
 	unwip = "! f(){ [ \"$(git log -1 --pretty=%B)\" = WIP ] && git reset HEAD~1 || echo not wip; };f"
 	wip = "! git commit -a --no-verify -m 'WIP' && git --no-pager -c color.status=always status -bs --show-stash --ahead-behind -M"
+	ap = ! git add -N . && git add -p .
 [advice]
 	detachedHead = false
 [core]

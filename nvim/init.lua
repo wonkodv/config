@@ -184,6 +184,12 @@ vim.cmd('highlight link markdownError NONE')
 vim.cmd('highlight MatchParen gui=bold guifg=red')
 vim.cmd('highlight Match guibg=#c4c4c4 guifg=#000066')
 
+-- default Comment (base01) is the faintest color in solarized light, too faint to read
+-- alternatives: Normal(grey) Type(yellow) Identifier(blue) SpecialComment(orange) Statement(green)
+vim.cmd('highlight! link Comment Underlined')
+-- the theme sets @comment by value rather than linking it, so treesitter buffers need this too
+vim.cmd('highlight! link @comment Comment')
+
 vim.cmd('highlight link LspReferenceText Match')
 vim.cmd('highlight link LspReferenceRead Match')
 vim.cmd('highlight link LspReferenceWrite Match')
@@ -500,6 +506,67 @@ function GetFilenameAndLine()
     return file_name .. "\nLine " .. line_no .. ":\n" .. text
 end
 
+local function Git(dir, ...)
+    local out = vim.fn.system(vim.list_extend({ "git", "-C", dir }, { ... }))
+    if vim.v.shell_error ~= 0 then
+        return nil
+    end
+    return (out:gsub("%s+$", ""))
+end
+
+-- Turn any of the forms git hands out for a remote -- scp-like `git@host:owner/repo.git`,
+-- `ssh://git@host[:port]/owner/repo.git`, `https://user@host/owner/repo.git` -- into the
+-- host and the owner/repo path that appear in the web UI's URLs.
+local function ParseGitRemote(url)
+    local host, path = url:match("^[%w+.-]+://[^@/]*@?([^/]+)/(.*)$")
+    if not host then
+        host, path = url:match("^[^@]*@([^:/]+):(.*)$")
+    end
+    if not host then
+        return nil
+    end
+    host = host:gsub(":%d+$", "")
+    path = path:gsub("%.git$", ""):gsub("^/", ""):gsub("/$", "")
+    return host, path
+end
+
+-- Build the permalink for the current line: a URL pinned to the current commit rather than to a
+-- branch name, so it keeps pointing at this line after the branch moves on.
+function GetForgeUrl()
+    local dir = vim.fn.expand("%:p:h")
+    if vim.fn.isdirectory(dir) == 0 then
+        return nil, "buffer has no file on disk"
+    end
+    local remote = Git(dir, "remote", "get-url", "origin")
+    if not remote or remote == "" then
+        return nil, "no origin remote"
+    end
+    local host, repo = ParseGitRemote(remote)
+    if not host then
+        return nil, "cannot parse remote: " .. remote
+    end
+    local commit = Git(dir, "rev-parse", "HEAD")
+    if not commit then
+        return nil, "no commit to anchor the link to"
+    end
+    local path = Git(dir, "ls-files", "--full-name", "--", vim.fn.expand("%:p:t"))
+    if not path or path == "" then
+        return nil, "file is not tracked by git"
+    end
+    -- GitLab namespaces its web routes under `/-/` to keep them apart from nested group paths;
+    -- GitHub puts `blob` directly after the repo. Self-hosted instances are recognised by the
+    -- forge name appearing somewhere in the host; anything else we have no URL scheme for.
+    local infix
+    if host:find("gitlab", 1, true) then
+        infix = "/-/blob/"
+    elseif host:find("github", 1, true) then
+        infix = "/blob/"
+    else
+        return nil, "unknown forge: " .. host
+    end
+    return "https://" .. host .. "/" .. repo .. infix .. commit .. "/" .. path .. "#L" .. vim.fn.line(".")
+end
+
 function AllZemMatches(term)
     local list = {}
     local matches = ZemGetMatches(term, 20)
@@ -672,6 +739,41 @@ end
 
 -- }}}
 
+-- Related files {{{
+
+-- ftplugins set `b:related_file_res` to a list of [vim-regex, [replacement, ...]]
+function get_related_file(path)
+    for _, entry in ipairs(vim.b.related_file_res or {}) do
+        local pattern, replacements = entry[1], entry[2]
+        if vim.fn.match(path, pattern) >= 0 then
+            for _, r in ipairs(replacements) do
+                local nf = vim.fn.substitute(path, pattern, r, '')
+                if vim.fn.filereadable(nf) == 1 then
+                    return nf
+                end
+            end
+            return vim.fn.substitute(path, pattern, replacements[1], '')
+        end
+    end
+end
+
+function edit_related_file()
+    if vim.bo.buftype == 'terminal' then
+        vim.cmd('terminal')
+        return
+    end
+
+    local path = vim.fn.expand('%')
+    local related = get_related_file(path)
+    if related then
+        vim.cmd('edit ' .. vim.fn.fnameescape(related))
+    else
+        print('No pattern matched ' .. path)
+    end
+end
+
+-- }}}
+
 function TerminalOpen()
     local terminals = vim.fn.getbufinfo({ bufloaded = 1 })
     local term_bufs = {}
@@ -723,6 +825,11 @@ end, { nargs = 1, complete = 'file' })
 
 vim.api.nvim_create_user_command('Suw', function()
     SudoWrite()
+end, {})
+
+vim.api.nvim_create_user_command('Scratch', function()
+    vim.cmd(':tabnew')
+    vim.cmd(':set buftype=nofile')
 end, {})
 
 vim.api.nvim_create_user_command('DefaultFile', function(opts)
@@ -888,6 +995,15 @@ map('n', '<leader>i', ':Import<CR>')
 map('o', 'i*', ':<C-U>call TextObjComment(1)<CR>')
 map('v', 'i*', '<ESC>:<C-U>call TextObjComment(1)<CR>')
 map('n', '<leader>l', function() vim.fn.setreg('+', GetFilenameAndLine()) end)
+map('n', '<leader>L', function()
+    local url, err = GetForgeUrl()
+    if not url then
+        vim.notify(err, vim.log.levels.ERROR)
+        return
+    end
+    vim.fn.setreg('+', url)
+    vim.notify(url)
+end)
 map('n', '<leader>m', function() vim.cmd('edit ' .. FindBuildFile('')) end)
 map('n', '<leader>M', function() vim.cmd('edit ' .. FindBuildFile('!')) end)
 map('n', '<leader>n', ':bn<CR>')
@@ -916,8 +1032,8 @@ map('n', '<leader>s', function()
         text .. '\\>/' .. text .. '/gc' .. string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), 3))
 end)
 map({ 'n', 'v' }, '<leader>S', ':%s/[ \\r\\t]\\+$//e<CR>')
-map('n', '<leader>T', TerminalOpen)
-map('n', '<leader>t', ':tabnew<CR>:set buftype=nofile<CR>')
+map('n', '<leader>t', TerminalOpen)
+map('n', '<leader>T', ':tab term<CR>')
 map('n', '<leader>v', ':grep "\\b<C-R><C-W>\\b"<CR>')
 map('n', 'Z', ':Zem<CR>')
 map('n', 'z0', ':set foldlevel=99<CR>')

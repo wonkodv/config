@@ -1,3 +1,4 @@
+
 alias :e="nvr --remote-tab"
 alias :q='false'
 alias :wq='false'
@@ -26,7 +27,6 @@ alias ln='ln -i'
 alias mkdir='mkdir -p -v'
 alias mv='mv -i'
 alias nano='nano -w'
-alias nix-unfree='NIXPKGS_ALLOW_UNFREE=1 nix --impure'
 alias rm='rm -i'
 alias rsync='rsync --progress'
 alias shred='shred -uz'

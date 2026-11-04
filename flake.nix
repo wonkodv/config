@@ -64,6 +64,7 @@
                         feh
                         feh.man
                         firefox
+                        jhead
                         keepassxc
                         killall
                         kitty
@@ -75,23 +76,33 @@
                     ];
 
                     full = [
+                        bashInteractive     
                         blueman
                         calibre
                         cameractrls
                         chromium # has to match GPU Drivers
+                        fontconfig
                         inkscape
+                        libGL
+                        libX11
+                        libXcursor
+                        libXi
+                        libXrandr
                         libreoffice
+                        libxkbcommon
                         mpc
                         mpd
                         mpd-mpris
-                        opencode
                         numlockx
+                        opencode
+                        openssl
                         pcsc-tools
                         pinentry-gnome3
                         playerctl
                         steam
                         thunderbird
                         typst
+                        wayland
                         xournalpp
                         zbar
                     ];

@@ -215,11 +215,11 @@
     services.pcscd.enable = true;
     services.pcscd.plugins = [ pkgs.pcsc-cyberjack ];
 
-    virtualisation.virtualbox.host.enable = true;
-    boot.kernelParams = [ "kvm.enable_virt_at_load=0" ]; # TODO: workaround because kvm seems to be enabled now and VB don't like it
     boot.loader.timeout = 1;
-    users.extraGroups.vboxusers.members = [ "mr" ];
 
+    # users.extraGroups.vboxusers.members = [ "mr" ];
+    # boot.kernelParams = [ "kvm.enable_virt_at_load=0" ]; # TODO: workaround because kvm seems to be enabled now and VB don't like it
+    # virtualisation.virtualbox.host.enable = true;
     # programs.virt-manager.enable = true;
     # users.groups.libvirtd.members = ["mr"];
     # virtualisation.libvirtd.enable = true;
@@ -257,9 +257,6 @@
             Type = "oneshot";
         };
     };
-
-
-    services.ollama.enable = true;
 
     services.gnome.gnome-keyring.enable = true;
 
